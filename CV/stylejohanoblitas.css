@@ -1,0 +1,12 @@
+#nombre_curso {
+    font-size: xx-large;
+    font-family: "Sofia", sans-serif;
+    background-color: cadetblue;
+    border: 2px solid rgb(79, 185, 227);
+    padding: 10px;
+}
+
+.titulos {
+    font-size: x-large;
+}
+
