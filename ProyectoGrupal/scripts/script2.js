@@ -4,13 +4,14 @@ let componentsPriceText=document.getElementById("componentsPrice");
 let beginnerComponentsPrice=document.getElementById("beginner-components-price");
 
 let possibleCheckoutItems=[];
+let next = document.getElementById("nextButton");
 let startRecommend=document.getElementById("startRecommend");
 let beginnerRecommendedComponents=document.getElementById("beginner-components-grid");
 
 let optionButton=document.querySelectorAll(".optionButton");
 let optionRecommended=null;
 
-
+let buyNum=0;
 let graphicItems=[{
     "name":"NVIDIA GeForce GTx",
     "price":200,
@@ -162,6 +163,14 @@ optionButton.forEach(
         });
     }
 );
+function addToPossibleCheckout(name,price,imgSrc,order){
+    let item = {}
+    item.name=name;
+    item.price=price;
+    item.imgSrc=imgSrc;
+    item.id=order;
+    possibleCheckoutItems.push(item);
+}
 function createComponentCard(imgSrc,component,price){
     let componentCardCol=document.createElement("div");
     componentCardCol.setAttribute("id","content-beginner-recommendation-components-col");
@@ -177,6 +186,7 @@ function createComponentCard(imgSrc,component,price){
     componentCardCol.appendChild(componentCardPrice);
     return componentCardCol;
 }
+
 function beginnerRecommendationGeneration(){
     let rowNum=0;
     let tempPrice=0;
@@ -207,12 +217,14 @@ function beginnerRecommendationGeneration(){
             break;
     }
     for(let i=0;i<7;i++){
+        buyNum++;
         if(rowNum==0){
             componentCardRow=document.createElement("div");
             componentCardRow.setAttribute("class","row");
         }
         rowNum++;
         let tempcol = createComponentCard(allItems[i][recommendTypeComponents[i]].img,allItems[i][recommendTypeComponents[i]].name,allItems[i][recommendTypeComponents[i]].price);
+        addToPossibleCheckout(allItems[i][recommendTypeComponents[i]].name,allItems[i][recommendTypeComponents[i]].price,allItems[i][recommendTypeComponents[i]].img,buyNum);
         tempPrice+=Number(allItems[i][recommendTypeComponents[i]].price);
         componentCardRow.appendChild(tempcol);
         if(rowNum==2){
@@ -227,7 +239,10 @@ function beginnerRecommendationGeneration(){
         }
     }
     beginnerComponentsPrice.innerHTML=`<b>$ ${tempPrice}</b>`;
+    console.log(possibleCheckoutItems);
 }
 beginnerRecommendationGeneration();
-
-
+next.href="pre-checkout.html";
+next.addEventListener("click",()=>{
+    localStorage.setItem("checkoutItems",JSON.stringify(possibleCheckoutItems));
+});

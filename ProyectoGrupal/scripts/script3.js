@@ -144,8 +144,22 @@ let otherComponents = [
 let allItems=[
     graphicItems,processorItems,memoryItems,storageItems,coolerItems,windowsItems,powersupplyItems
 ]
+function removeFromPossibleCheckout(name,price,imgSrc,order){
+    for(let i=0;i<possibleCheckoutItems.length;i++){
+        if(possibleCheckoutItems[i].id==order){  
+            possibleCheckoutItems.splice(i,1);
+        }
+    }
+    if(possibleCheckoutItems.length==0){
+        let tempMessage=document.createElement("p");
+        tempMessage.innerHTML="<b>No items to checkout</b>";
+        tempMessage.style.textAlign="center";
+        checkout.appendChild(tempMessage);
+    }
+}
 
-function createCartItem(name, price,imgSrc){
+
+function createCartItem(name, price,imgSrc,order){
     let cartItem = document.createElement("div");
     cartItem.style.width="90%";
     cartItem.style.marginRight="auto";
@@ -167,6 +181,7 @@ function createCartItem(name, price,imgSrc){
     cartItem_button.textContent="x";
     cartItem_button.addEventListener("click",()=>{
         cartItem.style.display="none";
+        removeFromPossibleCheckout(name,price,imgSrc,order);
     });
     cartItem.appendChild(cartItem_img);
     cartItem_text_div.appendChild(cartItem_text_text);
@@ -178,11 +193,9 @@ function createCartItem(name, price,imgSrc){
 
 function getPossibleCheckoutItems(){
     possibleCheckoutItems=JSON.parse(localStorage.getItem("checkoutItems"));
-    console.log(possibleCheckoutItems);
 
     for (let item of possibleCheckoutItems){
-        console.log(item);
-        let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc);
+        let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc,item.id);
         checkout.appendChild(tempCheckoutItem);
     };
     
