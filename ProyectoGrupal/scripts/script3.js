@@ -9,6 +9,8 @@ let processorNum=0;
 let buyNum=0;
 let buySelection=0;
 let componentsPrice=0;
+ 
+let totalPrice=0;
 
 
 let graphicItems=[{
@@ -182,8 +184,8 @@ function createCartItem(name, price,imgSrc,order){
     cartItem_button.textContent="x";
     cartItem_button.addEventListener("click",()=>{
         cartItem.style.display="none";
+        totalPrice-=Number(price);
         removeFromPossibleCheckout(name,price,imgSrc,order);
-        localStorage.setItem("checkoutItems",possibleCheckoutItems);
     });
     cartItem.appendChild(cartItem_img);
     cartItem_text_div.appendChild(cartItem_text_text);
@@ -198,12 +200,14 @@ function getPossibleCheckoutItems(){
 
     for (let item of possibleCheckoutItems){
         let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc,item.id);
+        totalPrice+=Number(item.price);
         checkout.appendChild(tempCheckoutItem);
     };
     
 }
 next.addEventListener("click",()=>{
     localStorage.setItem("checkoutItems",JSON.stringify(possibleCheckoutItems));
+    localStorage.setItem("totalPrice",totalPrice);
 });
 getPossibleCheckoutItems();
 

@@ -4,6 +4,9 @@ let checkout=document.getElementById("list-checkout");
 
 let possibleCheckoutItems=[];
 
+let totalPrice;
+let price=document.getElementById("price");
+
 let processorNum=0;
 let buyNum=0;
 let buySelection=0;
@@ -192,7 +195,8 @@ function createCartItem(name, price,imgSrc,order){
 
 function getPossibleCheckoutItems(){
     possibleCheckoutItems=JSON.parse(localStorage.getItem("checkoutItems"));
-    console.log(possibleCheckoutItems);
+    totalPrice=localStorage.getItem("totalPrice");
+    price.innerHTML=`$${Number(totalPrice)}`;
     for (let item of possibleCheckoutItems){
         let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc,item.id);
         checkout.appendChild(tempCheckoutItem);
