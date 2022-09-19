@@ -3,7 +3,6 @@ let content=document.getElementById("content");
 let checkout=document.getElementById("list-checkout");
 
 let possibleCheckoutItems=[];
-let next= document.getElementById("next");
 
 let processorNum=0;
 let buyNum=0;
@@ -166,45 +165,39 @@ function createCartItem(name, price,imgSrc,order){
     cartItem.style.marginRight="auto";
     cartItem.style.marginLeft="auto";
     cartItem.style.marginBottom="30px";
+    cartItem.style.color="white";
+    cartItem.style.border="none";
+    cartItem.style.borderRadius="0px";
+    cartItem.style.borderBottom="1px solid gray";
+    cartItem.style.backgroundColor="transparent";
     let cartItem_img = document.createElement("img");
     let cartItem_text_div = document.createElement("div");
     let cartItem_text_text = document.createElement("p");
     let cartItem_text_price = document.createElement("p");
-    let cartItem_button=document.createElement("button");
     cartItem.setAttribute("class","content-advanced-buyCard");
     cartItem_img.setAttribute("src",imgSrc);
     cartItem_text_div.setAttribute("class","content-advanced-buyCard-text");
     cartItem_text_price.setAttribute("class","content-advanced-buyCard-text-price");
-    cartItem_button.setAttribute("class","content-advanced-buyCard-addButton");
     cartItem_text_text.innerHTML=`<b>${name}</b>`;
     cartItem_text_price.innerHTML=`${price}$`;
-    cartItem_button.id="buy"+buyNum;
-    cartItem_button.textContent="x";
-    cartItem_button.addEventListener("click",()=>{
-        cartItem.style.display="none";
-        removeFromPossibleCheckout(name,price,imgSrc,order);
-        localStorage.setItem("checkoutItems",possibleCheckoutItems);
-    });
     cartItem.appendChild(cartItem_img);
     cartItem_text_div.appendChild(cartItem_text_text);
-    cartItem_text_div.appendChild(cartItem_text_price);
+    
     cartItem.appendChild(cartItem_text_div);
-    cartItem.appendChild(cartItem_button);
+    cartItem_text_price.style.marginRight="20px";
+    cartItem_text_price.style.marginTop="10px";
+    cartItem.appendChild(cartItem_text_price);
     return cartItem;
 }
 
 function getPossibleCheckoutItems(){
     possibleCheckoutItems=JSON.parse(localStorage.getItem("checkoutItems"));
-
+    console.log(possibleCheckoutItems);
     for (let item of possibleCheckoutItems){
         let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc,item.id);
         checkout.appendChild(tempCheckoutItem);
     };
     
 }
-next.addEventListener("click",()=>{
-    localStorage.setItem("checkoutItems",JSON.stringify(possibleCheckoutItems));
-});
 getPossibleCheckoutItems();
-
 
