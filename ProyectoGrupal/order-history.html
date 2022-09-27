@@ -25,9 +25,14 @@
       <button>Reviews</button>
       <button>Ranking</button>
     </div>
-    <div id="navbar-profile">
+    <div id="navbar-profile" class="inline">
       <button><img src="icons/search.png"></button>
-      <a href="index.html"><button><img src="icons/user.png"></button></a>
+      <div class="dropdown">
+        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="icons/user.png"></button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="order-history.html">Order History</a></li>
+        </ul>
+      </div>
       <button><img src="icons/cart.png"></button>
     </div>
   </div>
@@ -46,14 +51,9 @@
         </div>
 
         <div class="col-8" style="margin-left: 75px">
-          <div id="order-history-list">
-
-          </div>
+          <div id="order-history-list"><!-- Historial de Componentes !--></div>
         </div>
-
       </div>
-
-
     </div>
   </div>
 
