@@ -24,10 +24,15 @@
     <button>Reviews</button>
     <button>Ranking</button>
 </div>
-<div id="navbar-profile">
-    <button><img src="icons/search.png"></button>
-    <a href="index.html"><button><img src="icons/user.png"></button></a>
-    <button><img src="icons/cart.png"></button>
+<div id="navbar-profile" class="inline">
+  <button><img src="icons/search.png"></button>
+  <div class="dropdown">
+    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="icons/user.png"></button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="order-history.html">Order History</a></li>
+    </ul>
+  </div>
+  <button><img src="icons/cart.png"></button>
 </div>
 </div>
 <div id="content">
@@ -47,14 +52,13 @@
     <div class="col" id="content-beginner-grid-col"><button class="optionButton" id="coding">
         <img src="images/coding.png">Coding</button></div>
 </div>
-<di class="row" id="content-beginner-grid-row">
+<div class="row" id="content-beginner-grid-row">
     <div class="col" id="content-beginner-grid-col"><button class="optionButton" id="rendering">
         <img src="images/rendering.png">Rendering</button></div>
     <div class="col" id="content-beginner-grid-col"><button class="optionButton" id="office">
         <img src="images/office.png">Office</button></div>
     <div class="col" id="content-beginner-grid-col"><button class="optionButton" id="other">
         <img src="images/other.png">Other</button></div>
-</div>
 </div>
 </div>
 </div>

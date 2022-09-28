@@ -310,3 +310,29 @@ button{
     padding: 20px;
     border-radius: 10px;
 }
+
+.content-historyCard-text{
+    text-align: left;
+    width: 50%;
+}
+
+.btn.btn-light {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+    border: none;
+    outline: 0;
+}
+
+#btn-order-history {
+    background-image: linear-gradient(to left, transparent 98%, orchid 98%);
+    background-color: rgb(221, 221, 221);
+    box-shadow: none;
+    border:none;
+}
+
+.btn.btn-light:focus:not(.focus-visible), .btn.btn-light:hover {
+    background-color: white;
+    box-shadow: none;
+    border:none;
+}

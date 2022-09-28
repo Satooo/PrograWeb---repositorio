@@ -1,8 +1,10 @@
-let content=document.getElementById("content");
+let content = document.getElementById("content");
 
-let checkout=document.getElementById("list-checkout");
+let checkout = document.getElementById("list-checkout");
+let purchase = document.getElementById("startPurchase");
 
-let possibleCheckoutItems=[];
+let possibleCheckoutItems = [];
+let actualHistoryItems = [];
 
 let totalPrice;
 let price=document.getElementById("price");
@@ -16,113 +18,113 @@ let componentsPrice=0;
 let graphicItems=[{
     "name":"NVIDIA GeForce GTx",
     "price":200,
-    "img":"images/graphic.png"
+    "img":"../images/graphic.png"
 },{
     "name":"NVIDIA GeForce GTx",
     "price":200,
-    "img":"images/graphic.png"
+    "img":"../images/graphic.png"
 },{
     "name":"NVIDIA GeForce GTx",
     "price":200,
-    "img":"images/graphic.png"
+    "img":"../images/graphic.png"
 },{
     "name":"NVIDIA GeForce GTx",
     "price":400,
-    "img":"images/graphic.png"
+    "img":"../images/graphic.png"
 }];
 let processorItems=[{
     "name":"Intel I3",
     "price":200,
-    "img":"images/processor.png"
+    "img":"../images/processor.png"
 },{
     "name":"Intel I5",
     "price":200,
-    "img":"images/processor.png"
+    "img":"../images/processor.png"
 },{
     "name":"Intel I7",
     "price":200,
-    "img":"images/processor.png"
+    "img":"../images/processor.png"
 },{
     "name":"Intel I9",
     "price":400,
-    "img":"images/processor.png"
+    "img":"../images/processor.png"
 }];
 let memoryItems=[{
     "name":"RAM 4gb",
     "price":200,
-    "img":"images/memory.png"
+    "img":"../images/memory.png"
 },{
     "name":"RAM 8gb",
     "price":200,
-    "img":"images/memory.png"
+    "img":"../images/memory.png"
 },{
     "name":"RAM 16gb",
     "price":200,
-    "img":"images/memory.png"
+    "img":"../images/memory.png"
 },{
     "name":"RAM 32gb",
     "price":400,
-    "img":"images/memory.png"
+    "img":"../images/memory.png"
 }];
 let storageItems=[{
     "name":"Toshiba 500GB",
     "price":200,
-    "img":"images/storage.png"
+    "img":"../images/storage.png"
 },{
     "name":"Toshiba 1TB",
     "price":200,
-    "img":"images/storage.png"
+    "img":"../images/storage.png"
 },{
     "name":"Toshiba 2TB",
     "price":200,
-    "img":"images/storage.png"
+    "img":"../images/storage.png"
 },{
     "name":"Toshiba 3TB",
     "price":400,
-    "img":"images/storage.png"
+    "img":"../images/storage.png"
 }];
 let coolerItems=[{
     "name":"Cooler 10",
     "price":200,
-    "img":"images/cooler.png"
+    "img":"../images/cooler.png"
 },{
     "name":"Cooler 20",
     "price":200,
-    "img":"images/cooler.png"
+    "img":"../images/cooler.png"
 },{
     "name":"Cooler 30",
     "price":200,
-    "img":"images/cooler.png"
+    "img":"../images/cooler.png"
 },{
     "name":"Cooler 40",
     "price":400,
-    "img":"images/cooler.png"
+    "img":"../images/cooler.png"
 }];
 let windowsItems=[{
     "name":"Windows 8 32bit AMD",
     "price":200,
-    "img":"images/windows.png"
+    "img":"../images/windows.png"
 },{
     "name":"Windows 8 64bit AMD",
     "price":200,
-    "img":"images/windows.png"
+    "img":"../images/windows.png"
 },{
     "name":"Windows 8 64bit Intel",
     "price":200,
-    "img":"images/windows.png"
+    "img":"../images/windows.png"
 },{
     "name":"Windows 8 64bit Intel",
     "price":400,
-    "img":"images/windows.png"
+    "img":"../images/windows.png"
 }];
 let powersupplyItems=[{
     "name":"PowerSupply Base",
     "price":200,
-    "img":"images/power.png"
+    "img":"../images/power.png"
 },{
     "name":"PowerSupply Max",
     "price":200,
-    "img":"images/power.png"
+    "img":"../images/power.png"
 }];
 
 let gamingComponents = [
@@ -147,7 +149,7 @@ let otherComponents = [
 let allItems=[
     graphicItems,processorItems,memoryItems,storageItems,coolerItems,windowsItems,powersupplyItems
 ]
-function removeFromPossibleCheckout(name,price,imgSrc,order){
+function removeFromPossibleCheckout(order){
     for(let i=0;i<possibleCheckoutItems.length;i++){
         if(possibleCheckoutItems[i].id==order){  
             possibleCheckoutItems.splice(i,1);
@@ -162,7 +164,7 @@ function removeFromPossibleCheckout(name,price,imgSrc,order){
 }
 
 
-function createCartItem(name, price,imgSrc,order){
+function createCartItem(name, price,imgSrc){
     let cartItem = document.createElement("div");
     cartItem.style.width="90%";
     cartItem.style.marginRight="auto";
@@ -201,7 +203,21 @@ function getPossibleCheckoutItems(){
         let tempCheckoutItem=createCartItem(item.name,item.price,item.imgSrc,item.id);
         checkout.appendChild(tempCheckoutItem);
     };
-    
 }
-getPossibleCheckoutItems();
 
+function insertIntoHistoryItems(){
+    actualHistoryItems = JSON.parse(localStorage.getItem("historyItems"));
+    if(actualHistoryItems === null){
+        actualHistoryItems = []
+    }
+    for (let item of possibleCheckoutItems){
+        actualHistoryItems.unshift(item);
+    };
+}
+
+purchase.addEventListener("click", () => {
+    insertIntoHistoryItems();
+    localStorage.setItem("historyItems", JSON.stringify(actualHistoryItems));
+});
+
+getPossibleCheckoutItems();
