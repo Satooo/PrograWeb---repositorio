@@ -157,9 +157,9 @@ const Base = (props) =>{
             </div>
             <Footer/>
             <div id="mobile-nav">
-                <button><img src={'./icons/user.png'}/></button>
-                <button><img src={'./icons/search.png'}/></button>
-                <button><img src={'./icons/cart.png'}/></button>
+                <button><a href="/user"><img src={'./icons/user.png'}/></a></button>
+                <button onClick={()=>{handleClick()}}><img src={isActive==false ? './icons/search.png':'./icons/exit.png'}/></button>
+                <button><a href="/pre-checkout"><img src={'./icons/cart.png'}/></a></button>
                 </div>
         </div>
         </div>
