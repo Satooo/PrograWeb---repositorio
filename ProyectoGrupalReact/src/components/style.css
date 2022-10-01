@@ -1315,62 +1315,6 @@ background: linear-gradient(180deg, rgba(7,39,120,1) 0%, rgba(64,12,78,1) 100%);
         margin-bottom: 350px;
     }
 
-    #searchbar{
-        position: absolute !important;
-        z-index: 100 !important;
-        font-size: 3em;
-        left:50%;
-        width: 100%;
-        filter: drop-shadow(2px 2px 10px black);
-    }
-    #searchbar a{
-        
-        background-color: purple;
-        padding: 30px;
-        margin-top:20px;
-        border-radius: 20px;
-        margin-right: 30px;
-    }
-
-    #searchbar input{
-        filter: drop-shadow(2px 2px 100px black);
-        font-size: 1.5em;
-    }
-    #searchPopup{
-        width: 18em;
-        margin-top:3em;
-        filter: drop-shadow(2px 2px 10px black);
-        padding: 50px;
-        font-size: 60px;
-    }
-
-    #searchbar{
-        position: absolute !important;
-        z-index: 100 !important;
-        font-size: 3em;
-        left:50%;
-        width: 100%;
-        filter: drop-shadow(2px 2px 10px black);
-    }
-    #searchbar a{
-        
-        background-color: purple;
-        padding: 30px;
-        margin-top:20px;
-        border-radius: 20px;
-        margin-right: 30px;
-    }
-
-    #searchbar input{
-        filter: drop-shadow(2px 2px 100px black);
-        font-size: 1.5em;
-    }
-    #searchPopup{
-        width: 18em;
-        margin-top:3em;
-        filter: drop-shadow(2px 2px 10px black);
-        padding: 50px;
-        font-size: 60px;
-    }
+    
 
 }
