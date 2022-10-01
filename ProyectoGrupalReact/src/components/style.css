@@ -1148,4 +1148,163 @@ background: linear-gradient(180deg, rgba(7,39,120,1) 0%, rgba(64,12,78,1) 100%);
     #footer{
         display: none;
     }
+  
+    .Formulario{
+        margin: auto;
+        margin-top: -100px;
+        width: 95%;
+        height: 1130px;
+        padding: 20px;
+        border-radius: 2%;
+        background-color: #221268;
+        color: white;
+    }
+    .Titulo{
+        font-size: 100px;
+    }
+    #loginButton{
+        margin-top: 30px;
+        font-size:60px;
+    }
+    .Parrafo{
+        font-size: 40px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    .contenedor-input{
+        font-size: 40px;
+        padding-top: 30px;
+        padding-bottom: 10px;
+    }
+    .Contenedor{
+         width: 100%;
+    }
+    .Parrafo1{
+        font-size: 40px;
+    }
+    .Parrafo2{
+        font-size: 40px;
+
+    }
+ 
+    #login-menu h1{
+        font-size: 90px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+    #login-menu{
+        height: 1100px;
+    }
+    #content-center{ 
+
+        width:100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        margin-top: 350px;
+    }
+    #login-menu{
+        width: 90%; 
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #221268;
+        color:white;
+        padding: 70px;
+        border-radius: 10px;
+        display:flex;
+        flex-direction: column;
+    }
+
+    #login-menu input{
+        margin-bottom: 40px;
+        background-color: transparent;
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 10px;
+        
+    }
+    #create-account{
+        background-color: white;
+        color:#221268;
+        font-family: "Bebas Neue";
+        font-size: 70px;
+        border-radius: 10px;
+        margin-top: 60px;
+        padding: 10px;
+    }
+  
+    #content-support h1{
+        font-size: 90px;
+        text-align: center;
+        margin-top: 70px;
+        margin-bottom: 200px;
+
+    }
+    #content-support-guide-col{
+        width: 105%;
+        height: 1000px;
+
+      
+    }
+    #content-support-guide-row{
+
+        height: 200px;
+        font-size: 60px;
+    }
+
+    
+    .content-about{
+        color: black;
+        text-align: center;
+        margin-right: auto;
+        margin-left: auto;
+        width: 100%;
+        height: 2000px;
+        background-color: white;
+        font-family: "Bebas Neue";
+        padding-top:1000px;
+        
+    }
+    .content-about h1{
+        font-size: 120px;
+        width: 55%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 40px;
+        margin-top: -900px;
+    }
+    #content-about-subText{
+        width: 40%;
+        font-size: 70px;
+        margin-top: 900px;
+        margin-left: 15%;
+        text-align: left;
+    }
+    #content-about-black{
+        background-color: #1d262a;
+        margin-top:-50px;
+        padding-bottom: 800px;
+        margin-bottom: -50px;
+    
+    }
+    #content-about-button{
+        position: absolute;
+        background-color: #ba68c8;
+        color:white;
+        width: 400px;
+        border-radius: 20px;
+        margin-left: 51%;
+        font-size: 60px;
+        top:1800px;
+        
+    }
+    .PC{
+        margin-top:-2000px;
+        width: 70%;
+        margin-left: 14%;
+        filter:drop-shadow(2px 2px 30px lightblue)
+    }
+
 }
