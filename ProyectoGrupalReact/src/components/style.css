@@ -1607,10 +1607,10 @@ background: linear-gradient(180deg, rgba(7,39,120,1) 0%, rgba(64,12,78,1) 100%);
         font-size: 120px;
     }
     #content-support-hub{
-        margin-top: 30%;
         width: 60%;
         margin-right: auto;
         margin-left: auto;
+        margin-bottom: 20%;
     }
 
     #content-support-hub div{
