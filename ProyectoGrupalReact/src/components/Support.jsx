@@ -7,7 +7,7 @@ const Support = ()=>{
     const options = () =>{
         return<div id="content-support">
 
-            <h1>Support hub</h1>
+            <h1 id="content-support-header">Support hub</h1>
             <div className="row" id="content-support-hub">
                 <div className="col"><button id="content-support-hub-button" onClick={()=>{setSelection("guides")}}>
                     <img src="./icons/guide.png"/>
