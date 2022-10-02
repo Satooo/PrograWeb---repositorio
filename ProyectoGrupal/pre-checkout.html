@@ -24,10 +24,15 @@
     <button>Reviews</button>
     <button>Ranking</button>
 </div>
-<div id="navbar-profile">
-    <button><img src="icons/search.png"></button>
-    <a href="index.html"><button><img src="icons/user.png"></button></a>
-    <button><img src="icons/cart.png"></button>
+<div id="navbar-profile" class="inline">
+  <button><img src="icons/search.png"></button>
+  <div class="dropdown">
+    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="icons/user.png"></button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="order-history.html">Order History</a></li>
+    </ul>
+  </div>
+  <button><img src="icons/cart.png"></button>
 </div>
 </div>
 <div id="content">
@@ -38,7 +43,7 @@
       <div style="width: 100%"></div>
       <a href="homepage.html" style="width:15%;background-color: white;text-align: center;border-radius:10px;padding:10px;margin-right: 20px;">
           <button style="width:100%"> < Back </button></a>
-          <a style="width:20%;background-color: #ba68c8;text-align: center;border-radius:10px;padding:10px;margin-right: 20px">
+          <a style="width:20%;background-color: #ba68c8;text-align: center;border-radius:10px;padding:10px;margin-right: 20px" href="purchase.html" id="next">
               <button style="width: 100%;color:white;">Checkout ></button></a>
   </div>
       <div class="col">

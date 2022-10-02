@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Proyecto Grupal</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="navbar">
+    <div id="icon">
+      <a href="homepage.html"><button class="no-decoration"><img src="images/game-icon-white.png"></button></a>
+    </div>
+    <div id="navbar-sections">
+      <button>Home</button>
+      <button>About</button>
+      <button>Support</button>
+      <button>Reviews</button>
+      <button>Ranking</button>
+    </div>
+    <div id="navbar-profile" class="inline">
+      <button><img src="icons/search.png"></button>
+      <div class="dropdown">
+        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="icons/user.png"></button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="order-history.html">Order History</a></li>
+        </ul>
+      </div>
+      <button><img src="icons/cart.png"></button>
+    </div>
+  </div>
+
+  <div id="content">
+    <div id="content-margin" style="width: 90%;">
+
+      <div class="inline" style="margin-bottom: 40px">
+        <h1>Checkout Process</h1>
+        <div style="width: 50%"></div>
+      </div>
+      <div class="row">
+        <div class="col-6" style="padding: 0px">
+          <div style="background-color: white; border-radius: 25px; padding: 20px; width:100%; color: black;">
+
+            <div style="font-weight: 600; margin-bottom: 15px;">
+              <span id="cart-status" style="color:orchid">Cart</span> >
+              <span id="information-status" style="color:black">Information</span> >
+              <span id="shipping-status" style="color:gray">Shipping</span> >
+              <span id="payment-status" style="color:gray">Payment</span>
+            </div>
+
+            <fieldset class="border rounded-3 p-3" legend class="float-none">
+              <legend class="float-none" style="width: auto; text-align: center; font-weight: 600; color:black">Express checkout</legend>
+              <div class="container">
+                <div class="row" style="display: flex; justify-content: center">
+                  <div class="col" ><button class="btn btn-default" style="background-color:#f3e5f5;border-radius:10px"><img src="icons/shop_pay-logo.png" class="rounded" width="90%"></button></div>
+                  <div class="col" ><button class="btn btn-default" style="background-color:#ffd54f;border-radius:10px"><img src="icons/paypal-logo.png" class="rounded" width="90%"></button></div>
+                  <div class="col" ><button class="btn btn-default" style="background-color:black;border-radius:10px"><img src="icons/google_pay-logo.png" class="rounded" width="90%"></button></div>
+                </div>
+            </fieldset>
+
+            <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgray; text-align: center; margin-top: 30px; margin-bottom: 30px">
+              <span style="background-color: white; color: gray; font-size: 15px; padding: 0 10px;">OR</span>
+            </div>
+
+            <div style="font-weight: 400; font-size: 20px; margin-bottom: 15px;">Contact Information</div>
+
+            <div class="row-1" style="display: flex; margin-bottom: 15px">
+              <div class="col-0.5 rounded" style="background-color:lightblue"><img src="icons/user.png"></div>
+              <div class="col" style="display:flex; flex-direction: column; padding-left: 15px">
+                <div>example@gmail.com</div>
+                <div style="color: orchid">Log out</div>
+              </div>
+            </div>
+
+            <div><input type="checkbox" style="margin-right:15px; margin-bottom: 30px">Email me with news and offers
+            </div>
+
+            <div style="font-weight: 400; font-size: 20px; margin-bottom: 15px;">Shipping Address</div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 5px; margin-bottom: 15px">
+              <div style="padding-left: 5px; color: gray">Saved addresses</div>
+              <select name="saved-address" style="width:100%; border:none; outline: none">
+                <option value="op1">United States</option>
+                <option value="op2">Canada</option>
+                <option value="op3">Peru</option>
+                <option value="op4">Argentina</option>
+              </select>
+            </div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 5px; margin-bottom: 15px">
+              <div style="padding-left: 5px; color: gray">Country / Region</div>
+              <select name="address" style="width: 100%; border:none; outline: none">
+                <option value="op1">United States</option>
+                <option value="op2">Canada</option>
+                <option value="op3">Peru</option>
+                <option value="op4">Argentina</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div style="border: 1px solid lightgray; border-radius: 10px; padding: 5px; margin-bottom: 15px">
+                  <div style="padding-left: 5px; color: gray">First Name</div>
+                  <input type="text" style="padding-left: 5px; width: 100%; border:none; outline: none" placeholder="Name">
+                </div>
+              </div>
+              <div class="col">
+                <div style="border: 1px solid lightgray; border-radius: 10px; padding: 5px; margin-bottom: 15px">
+                  <div style="padding-left: 5px; color: gray">Last Name</div>
+                  <input type="text" style="padding-left: 5px; width: 100%; border:none; outline: none" placeholder="Name">
+                </div>
+              </div>
+            </div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+              <input type="text" style="padding-left: 5px; width: 100%; border: none; outline: none; font-size: 18px" placeholder="Company (optional)">
+            </div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+              <input type="text" style="padding-left: 5px; width: 100%; border: none; outline: none; font-size: 18px" placeholder="Address">
+            </div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+              <input type="text" style="padding-left: 5px; width: 100%; border: none; outline: none; font-size: 18px" placeholder="Apartment, suite, etc. (optional)">
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+                  <input type="text" style="padding: 5px; width: 100%; border: none; outline: none; font-size: 18px" placeholder="City">
+                </div>
+              </div>
+              <div class="col">
+                <div style="border: 1px solid lightgray; border-radius: 10px; padding: 7px; margin-bottom: 15px">
+                  <div style="padding-left: 5px; color: gray; font-size: 13px">State</div>
+                  <select name="state" style="width: 100%; border: none; outline: none">
+                    <option value="op1">United States</option>
+                    <option value="op2">Canada</option>
+                    <option value="op3">Peru</option>
+                    <option value="op4">Argentina</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+                  <input type="text" style="padding: 5px; width: 100%; border: none; outline: none; font-size: 18px" placeholder="ZIP Code">
+                </div>
+              </div>
+            </div>
+
+            <div style="border: 1px solid lightgray; border-radius: 10px; padding: 10px; margin-bottom: 15px">
+              <input type="text" style="padding-left: 5px; width: 100%; border: none; outline: none; font-size: 18px"
+                placeholder="Phone">
+            </div>
+
+            <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 50px; margin-bottom: 15px">
+              <a href="homepage.html"><button style="color: orchid">< Return to cart</button></a>
+              <a id="startPurchase" href="homepage.html"><button style="background-color: orchid; color:white; padding: 10px; border-radius: 10px">Continue to shipping</button></a>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-6">
+          <div>
+            <div style="border-top-left-radius: 10px; border-top-right-radius: 10px; background-color:rgba(0, 0, 0, 0.7); width: 30%; margin-left: auto; margin-right: auto; text-align: center; padding: 20px;">Price: <b id="price">$0</b></div>
+            <div id="list-checkout" style="width:80%; margin-left: auto; margin-right: auto; background-color:rgba(0, 0, 0, 0.5); padding: 20px; border-radius: 10px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="row" id="footer-row">
+      <div class="col">
+        <h1>Sign up to our newsletter for the latest PC news!</h1>
+        <div class="inline">
+          <input type="text" placeholder="Email">
+          <button id="subscribe">Subscribe</button>
+        </div>
+        <div class="inline" id="socialmedia">
+          <button><img src="icons/facebook.png"></button>
+          <button><img src="icons/twitter.png"></button>
+          <button><img src="icons/instagram.png"></button>
+        </div>
+      </div>
+      <div class="col" id="footer-col2">
+        <div class="row">
+          <div class="col">Build your pc</div>
+          <div class="col">Good</div>
+          <div class="col">Terms & conditions</div>
+        </div>
+        <div class="row">
+          <div class="col">Why Redux</div>
+          <div class="col">Better</div>
+          <div class="col">Privacy & policy</div>
+        </div>
+        <div class="row">
+          <div class="col">Support</div>
+          <div class="col">Best</div>
+          <div class="col">Refund policy</div>
+        </div>
+      </div>
+    </div>
+    <div id="copyright">
+      Copyright
+    </div>
+  </div>
+
+  </div>
+
+</body>
+<script src="scripts/script4.js"></script>
+
+</html>
