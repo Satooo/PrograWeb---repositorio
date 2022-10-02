@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/PrograWeb---repositorio/static/css/main.38fa84d0.css",
+    "main.css": "/PrograWeb---repositorio/static/css/main.92cd503e.css",
     "main.js": "/PrograWeb---repositorio/static/js/main.6c1d811c.js",
     "static/js/787.28cb0dcd.chunk.js": "/PrograWeb---repositorio/static/js/787.28cb0dcd.chunk.js",
     "static/media/logo.svg": "/PrograWeb---repositorio/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/PrograWeb---repositorio/index.html",
-    "main.38fa84d0.css.map": "/PrograWeb---repositorio/static/css/main.38fa84d0.css.map",
+    "main.92cd503e.css.map": "/PrograWeb---repositorio/static/css/main.92cd503e.css.map",
     "main.6c1d811c.js.map": "/PrograWeb---repositorio/static/js/main.6c1d811c.js.map",
     "787.28cb0dcd.chunk.js.map": "/PrograWeb---repositorio/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.38fa84d0.css",
+    "static/css/main.92cd503e.css",
     "static/js/main.6c1d811c.js"
   ]
 }
