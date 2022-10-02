@@ -94,7 +94,7 @@ const User = () =>{
                         }
                     }}
 >Update info</button></div>
-                    <div className="col"><button>Cancel</button></div>
+                    <div id="cancel-button" className="col"><button>Cancel</button></div>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@ const User = () =>{
         setActualizar(true);
     }
     return <div className="row" id="content-user">
-    <div className="col-3">
+    <div id="content-buttons" className="col-3">
         <div className="row"><button id="content-user-buttons" className={selected==1?"content-user-button-selected":""} onClick={()=>{setSelected(1)}}>Order history</button></div>
         <div className="row"><button id="content-user-buttons" className={selected==0?"content-user-button-selected":""} onClick={()=>{setSelected(0)}}>Profile info</button></div>
         <a href={logOut==true?"/create-user":""}><div className="row"><button id="content-user-buttons" onClick={()=>{setLogOut(true)}}>Log out</button></div></a>
