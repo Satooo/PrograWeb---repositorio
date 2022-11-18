@@ -3,9 +3,9 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 
 const data = require("./test_data") // importamos data de test
-const { Carrera, Curso, Ciclo, Evaluacion } = require("./dao")
+const { Carrera, Curso, Ciclo, Evaluacion,Producto } = require("./dao")
 
-const PUERTO = 4444
+const PUERTO = 9999
 
 const app = express()
 app.use(bodyParser.json())
@@ -89,6 +89,23 @@ app.get("/evaluacion", async (req, resp) => {
 //      url : "http://blablac.com/archivo.zip",
 // }
 app.post("/resolucion", (req, resp) => {
+    
+})
+
+//Producto
+app.get("/producto",async(req,resp)=>{
+    const categoria = req.query.categoria
+    if(categoria==undefined || categoria== "-1"){
+        const listadoProducto = await Producto.findAll()
+        resp.send(listadoProducto)
+    }else{
+        const listadoProducto = await Producto.findAll({
+            where:{
+                Categoria: categoria
+            }
+        })
+        resp.send(listadoProducto)
+    }
     
 })
 

@@ -3,9 +3,36 @@ const { Sequelize, DataTypes } = require("sequelize");
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
 
 const CADENA_CONEXION = 
-    "postgresql://evaluaciones:evaluaciones@localhost:5432/evaluacionesdb"
+    "postgresql://grupo5:postgres@localhost:5432/proyectopw"
 
 const sequelize = new Sequelize(CADENA_CONEXION)
+
+const Producto = sequelize.define("Producto",{
+    Producto_id : {
+        primaryKey : true,
+        type : DataTypes.UUID,
+        defaultValue : Sequelize.UUIDV4
+    },
+    Nombre : {
+        type : DataTypes.STRING(),
+        allowNull : false
+    },
+    Precio: {
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
+    Descripcion: {
+        type: DataTypes.STRING(),
+        allowNull: false
+    },
+    Categoria: {
+        type: DataTypes.STRING(),
+        allowNull: false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
 
 const Carrera = sequelize.define("carrera", {
     id : {
@@ -175,5 +202,5 @@ Evaluacion.hasMany(Resolucion, {
 
 
 module.exports = {
-    Carrera, Curso, Ciclo, Evaluacion, Estudiante, Resolucion
+    Carrera, Curso, Ciclo, Evaluacion, Estudiante, Resolucion, Producto
 }
