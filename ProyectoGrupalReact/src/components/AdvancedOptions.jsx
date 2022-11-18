@@ -4,16 +4,56 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   codingComponentes, officeComponents, renderingComponents, otherComponents,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
+import { useEffect } from "react";
 
 
 
 const AdvancedOptions = (props) => {
   let orderNum=0;
   let [totalPrice,setTotalPrice]=useState(0);
-  const [selection, setSelection] = useState("graphics");
-  console.log(selection);
+  const [selection, setSelection] = useState("");
 
   const [click,setClick]=useState(false);
+  
+  const [categoria,setCategoria]=useState("")
+
+  const [listadoProductos,setListadoProductos]=useState([])
+
+  const httpObtenerProductos = async (categoria) => {
+    const resp = await fetch(`http://localhost:9999/producto?categoria=${categoria}`)
+    const data = await resp.json()
+    setListadoProductos(data)
+  }
+
+  
+  useEffect(()=>{
+    httpObtenerProductos(categoria)
+  },[categoria])
+
+  const imageLink = (selection)=>{
+    switch(selection){
+      case "Graficas":
+          return  "images/graphic.png";
+  
+      case "Procesador":
+          return "images/processor.png";
+  
+      case "Memoria":
+        return "images/memory.png";
+  
+      case "Almacenamiento":
+        return "images/storage.png";
+  
+      case "Cooler":
+        return "images/cooler.png";
+  
+      case "Windows":
+        return "images/windows.png";
+        
+      case "Power":
+        return "images/power.png";
+    }
+  }
 
   const changeContent = (selection)=>{
     switch(selection){
@@ -34,7 +74,7 @@ const AdvancedOptions = (props) => {
   
       case "windows":
         return windowsItems;
-  
+        
       case "powerSupply":
         return powersupplyItems;
     }
@@ -66,10 +106,17 @@ const AdvancedOptions = (props) => {
     </div>
   }
   const showContent = (selection) =>{
-    let tempArray = changeContent(selection);
-    const Items= Array(tempArray.length).fill(0).map((_,index)=>{
-      return AComponentAddCard(tempArray[index].name,tempArray[index].price,tempArray[index].img,index);
-      });
+    if(selection=="" || categoria==""){
+      setSelection("graphics")
+      setCategoria("Graficas")
+    }
+    let image=imageLink(categoria)    
+    //const Items= Array(tempArray.length).fill(0).map((_,index)=>{
+    //  return AComponentAddCard(tempArray[index].name,tempArray[index].price,tempArray[index].img,index);
+    //  });
+    const Items = Array(listadoProductos.length).fill(0).map((_,index)=>{
+      return AComponentAddCard(listadoProductos[index].Nombre,listadoProductos[index].Precio,image,index);
+    })
     return Items;
   }
   
@@ -137,27 +184,27 @@ const AdvancedOptions = (props) => {
       <div className="col-5" id="mobile-advanced-head">
           <div className="row">
               <div className="col-3">
-                  <button className="content-advanced-categories-grid-col" id="graphicButton" onClick={()=>{setSelection("graphics")}}>Graphics</button>
+                  <button className="content-advanced-categories-grid-col" id="graphicButton" onClick={()=>{setSelection("graphics"),setCategoria("Graficas")}}>Graphics</button>
               </div>
               <div className="col-3">
-                  <button className="content-advanced-categories-grid-col" id="processorButton" onClick={()=>{setSelection("processor")}}>Processor</button>
+                  <button className="content-advanced-categories-grid-col" id="processorButton" onClick={()=>{setSelection("processor"),setCategoria("Procesador")}}>Processor</button>
               </div>
               <div className="col-3">
-                  <button className="content-advanced-categories-grid-col" id="memoryButton" onClick={()=>{setSelection("memory")}}>Memory</button>
+                  <button className="content-advanced-categories-grid-col" id="memoryButton" onClick={()=>{setSelection("memory"),setCategoria("Memoria")}}>Memory</button>
               </div>
               <div className="col-3">
-                  <button className="content-advanced-categories-grid-col" id="storageButton" onClick={()=>{setSelection("storage")}}>Storage</button>
+                  <button className="content-advanced-categories-grid-col" id="storageButton" onClick={()=>{setSelection("storage"),setCategoria("Almacenamiento")}}>Storage</button>
               </div>
           </div>
           <div className="row" style={{marginTop:"20px"}}>
               <div className="col-4">
-                  <button className="content-advanced-categories-grid-col" id="coolerButton" onClick={()=>{setSelection("cooler")}}>Cooler</button>
+                  <button className="content-advanced-categories-grid-col" id="coolerButton" onClick={()=>{setSelection("cooler"),setCategoria("Cooler")}}>Cooler</button>
               </div>
               <div className="col-4">
-                  <button className="content-advanced-categories-grid-col" id="windowsButton" onClick={()=>{setSelection("windows")}}>Windows</button>
+                  <button className="content-advanced-categories-grid-col" id="windowsButton" onClick={()=>{setSelection("windows"),setCategoria("Windows")}}>Windows</button>
               </div>
               <div className="col-4">
-                  <button className="content-advanced-categories-grid-col" id="powerButton" onClick={()=>{setSelection("powerSupply")}}>Power supply</button>
+                  <button className="content-advanced-categories-grid-col" id="powerButton" onClick={()=>{setCategoria("Power")}}>Power supply</button>
               </div>
           </div>
       </div>

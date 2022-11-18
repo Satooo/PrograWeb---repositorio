@@ -92,6 +92,7 @@ app.post("/resolucion", (req, resp) => {
     
 })
 
+//NUESTRO PROYECTO
 //Producto
 app.get("/producto",async(req,resp)=>{
     const categoria = req.query.categoria

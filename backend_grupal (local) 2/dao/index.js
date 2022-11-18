@@ -2,11 +2,14 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
 
+//NUESTRO PROYECTO
 const CADENA_CONEXION = 
     "postgresql://grupo5:postgres@localhost:5432/proyectopw"
 
 const sequelize = new Sequelize(CADENA_CONEXION)
 
+
+//NUESTRO PROYECTO
 const Producto = sequelize.define("Producto",{
     Producto_id : {
         primaryKey : true,
