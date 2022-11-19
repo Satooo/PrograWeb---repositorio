@@ -37,6 +37,45 @@ const Producto = sequelize.define("Producto",{
     freezeTableName : true
 })
 
+const PCArmado = sequelize.define("PC_Armado",{
+    PC_Armado_id:{
+        primaryKey : true,
+        type : DataTypes.UUID,
+        defaultValue : Sequelize.UUIDV4
+    },
+    Nombre:{
+        type: DataTypes.STRING(),
+        allowNull:false
+    },
+    Descripcion:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
+const PC_Armado_Producto = sequelize.define("PC_Armado_Producto",{
+    PC_Armado_Producto_id:{
+        primaryKey : true,
+        type : DataTypes.UUID,
+        defaultValue : Sequelize.UUIDV4
+    },
+    PC_Armado_id:{
+        type : DataTypes.UUID,
+        allowNull:false
+    },
+    Producto_id:{
+        type : DataTypes.UUID,
+        allowNull:false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
+
 const Carrera = sequelize.define("carrera", {
     id : {
         primaryKey : true,
@@ -203,7 +242,20 @@ Evaluacion.hasMany(Resolucion, {
     foreignKey : "id"
 })
 
+PC_Armado_Producto.belongsTo(Producto,{
+    foreignKey:"Producto_id"
+})
+Producto.hasMany(PC_Armado_Producto,{
+    foreignKey:"Producto_id"
+})
+
+PC_Armado_Producto.belongsTo(PCArmado,{
+    foreignKey:"PC_Armado_id"
+})
+PCArmado.hasMany(PC_Armado_Producto,{
+    foreignKey:"PC_Armado_id"
+})
 
 module.exports = {
-    Carrera, Curso, Ciclo, Evaluacion, Estudiante, Resolucion, Producto
+    Carrera, Curso, Ciclo, Evaluacion, Estudiante, Resolucion, Producto, PCArmado,PC_Armado_Producto
 }

@@ -3,7 +3,7 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 
 const data = require("./test_data") // importamos data de test
-const { Carrera, Curso, Ciclo, Evaluacion,Producto } = require("./dao")
+const { Carrera, Curso, Ciclo, Evaluacion,Producto, PCArmado, PC_Armado_Producto } = require("./dao")
 
 const PUERTO = 9999
 
@@ -108,6 +108,66 @@ app.get("/producto",async(req,resp)=>{
         resp.send(listadoProducto)
     }
     
+})
+
+app.get("/armados",async(req,resp)=>{
+    const tipoArmado = req.query.tipo
+    if(tipoArmado=="coding" || tipoArmado==undefined){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "d075a6a4-d609-4215-b6ba-c1d1725fc0e5",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+    if(tipoArmado=="gaming"){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "d66ba21d-648a-4ad5-97c8-540b0710ecf4",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+    if(tipoArmado=="office"){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "dad561a4-e921-4976-b0eb-b06e23c6b2fd",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+    if(tipoArmado=="other"){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "09df901a-6712-4d3e-b3df-5c419bc8acfe",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+    if(tipoArmado=="design"){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "0efc9437-81d4-45a8-a30e-efaaf8daeaeb",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+    if(tipoArmado=="rendering"){
+        const listadoArmado = await PC_Armado_Producto.findAll({
+            where:{
+                PC_Armado_id: "61ebe896-0aa4-43f1-b967-44fd57dcdf24",
+            },
+            include: Producto
+       })
+       resp.send(listadoArmado)
+    }
+   
+
 })
 
 app.listen(PUERTO, () => {
