@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes, DATE } = require("sequelize");
 
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
 
@@ -75,172 +75,150 @@ const PC_Armado_Producto = sequelize.define("PC_Armado_Producto",{
     freezeTableName : true
 })
 
-
-const Carrera = sequelize.define("carrera", {
-    id : {
+const Usuario = sequelize.define("Usuario",{
+    Usuario_id:{
         primaryKey : true,
         type : DataTypes.UUID,
         defaultValue : Sequelize.UUIDV4
     },
-    nombre : {
-        type : DataTypes.STRING(200),
-        allowNull : false
-    } 
-}, {
-    timestamps : false,
-    freezeTableName : true
-})
-
-const Curso = sequelize.define("curso", {
-    id : {
-        primaryKey : true,
-        type : DataTypes.UUID,
-        defaultValue : Sequelize.UUIDV4
+    Nombre:{
+        type: DataTypes.STRING(),
+        allowNull: false
     },
-    nombre : {
-        type : DataTypes.STRING(150),
-        allowNull : false
+    Apellido:{
+        type: DataTypes.STRING(),
+        allowNull:false
     },
-    carrera_id : {
-        type : DataTypes.UUID,
-        allowNull : true
+    Correo:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Contrasena:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Direccion:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Departamento:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Ciudad:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Codigo_postal:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Telefono:{
+        type:DataTypes.STRING(),
+        allowNull:false
     }
 }, {
     timestamps : false,
     freezeTableName : true
 })
 
-const Evaluacion = sequelize.define("evaluacion", {
-    id : {
+const Reporte = sequelize.define("Reporte",{
+    Reporte_id:{
         primaryKey : true,
         type : DataTypes.UUID,
         defaultValue : Sequelize.UUIDV4
     },
-    nombre : {
-        type : DataTypes.STRING(200),
-        allowNull : false
+    Usuario_id:{
+        type:DataTypes.UUID,
+        allowNull:false
     },
-    fecha_registro : {
-        type : DataTypes.DATE,
-        allowNull : true
+    Correo:{
+        type: DataTypes.STRING(),
+        allowNull: false
     },
-    curso_id : {
-        type : DataTypes.UUID,
-        allowNull : false
+    Nombre:{
+        type: DataTypes.STRING(),
+        allowNull: false
     },
-    ciclo_id : {
-        type : DataTypes.UUID,
-        allowNull : false
+    Telefono:{
+        type: DataTypes.STRING(),
+        allowNull: false
+    },
+    Asunto:{
+        type: DataTypes.STRING(),
+        allowNull: false
+    },
+    Descripcion:{
+        type: DataTypes.STRING(),
+        allowNull: false
     }
 }, {
     timestamps : false,
     freezeTableName : true
 })
 
-const Ciclo = sequelize.define("ciclo", {
-    id : {
-        primaryKey : true,
-        type : DataTypes.UUID,
+const Resena = sequelize.define("Resena",{
+    Resena_id:{
+        primaryKey:true,
+        type:DataTypes.UUID,
         defaultValue : Sequelize.UUIDV4
     },
-    nombre : {
-        type : DataTypes.STRING(200),
-        allowNull : false
+    Usuario_id:{
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+    Puntaje:{
+        type:DataTypes.INTEGER,
+        allowNull:true
+    },
+    Comentario:{
+        type:DataTypes.STRING(),
+        allowNull:true
+    },
+    Video:{
+        type:DataTypes.STRING(),
+        allowNull:true
+    },
+    Link:{
+        type:DataTypes.STRING(),
+        allowNull:true
+    },
+    Tpo_resena:{
+        type:DataTypes.STRING(),
+        allowNull:true
     }
 }, {
     timestamps : false,
     freezeTableName : true
 })
 
-const Estudiante = sequelize.define("estudiante", {
-    id : {
-        primaryKey : true,
-        type : DataTypes.UUID,
-        defaultValue : Sequelize.UUIDV4
+const Orden = sequelize.define("Orden",{
+    Orden_id:{
+        primaryKey:true,
+        type:DataTypes.UUID,
+        defaultValue:Sequelize.UUIDV4
     },
-    username : {
-        type : DataTypes.STRING(20),
-        allowNull : false
+    Usuario_id:{
+        type:DataTypes.UUID,
+        allowNull:false
     },
-    password : {
-        type : DataTypes.STRING(100),
-        allowNull : false
+    Monto:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    Direccion:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Fecha:{
+        type:DataTypes.DATE,
+        allowNull:false
     }
 }, {
     timestamps : false,
     freezeTableName : true
 })
 
-const Resolucion = sequelize.define("resolucion", {
-    id : {
-        primaryKey : true,
-        type : DataTypes.UUID,
-        defaultValue : Sequelize.UUIDV4
-    },
-    estudiante_id : {
-        type : DataTypes.UUID,
-        allowNull : false        
-    },
-    evaluacion_id : {
-        type : DataTypes.UUID,
-        allowNull : false
-    },
-    fecha_envio : {
-        type : DataTypes.DATE,
-        allowNull : false
-    },
-    upvote : {
-        type : DataTypes.INTEGER
-    },
-    url : {
-        type : DataTypes.STRING(2048)
-    }
-}, {
-    timestamps : false,
-    freezeTableName : true
-})
-
-
-// Relaciones
-// Curso * <----> 1 Carrera
-Curso.belongsTo(Carrera, {
-    foreignKey : "carrera_id"
-})
-Carrera.hasMany(Curso, {
-    foreignKey : "id"
-})
-
-// Evaluacion * <----> 1 Curso
-Evaluacion.belongsTo(Curso, {
-    foreignKey : "curso_id"
-})
-Curso.hasMany(Evaluacion, {
-    foreignKey : "id"
-})
-
-// Evaluacion * <----> 1 Ciclo
-Evaluacion.belongsTo(Ciclo, {
-    foreignKey : "ciclo_id"
-})
-Ciclo.hasMany(Evaluacion, {
-    foreignKey : "id"
-})
-
-// Resolucion * <----> 1 Estudiante
-Resolucion.belongsTo(Estudiante, {
-    foreignKey : "estudiante_id"
-})
-Estudiante.hasMany(Resolucion, {
-    foreignKey : "id"
-})
-
-// Resolucion * <----> 1 Evaluacion
-Resolucion.belongsTo(Evaluacion, {
-    foreignKey : "evaluacion_id"
-})
-Evaluacion.hasMany(Resolucion, {
-    foreignKey : "id"
-})
 
 PC_Armado_Producto.belongsTo(Producto,{
     foreignKey:"Producto_id"
@@ -257,5 +235,5 @@ PCArmado.hasMany(PC_Armado_Producto,{
 })
 
 module.exports = {
-    Carrera, Curso, Ciclo, Evaluacion, Estudiante, Resolucion, Producto, PCArmado,PC_Armado_Producto
+    Producto, PCArmado,PC_Armado_Producto,Usuario,Orden,Reporte,Resena
 }
