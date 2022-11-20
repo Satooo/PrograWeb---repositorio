@@ -22,6 +22,7 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
     windowsItems,storageItems, memoryItems,gamingComponents, designComponents,
     codingComponentes, officeComponents, renderingComponents, otherComponents,
     possibleCheckoutItems} from "./models/dataScript";
+import MyStory from "./MyStory";
 
 const Base = (props) =>{
     const [selected, setSelected] = React.useState(0);
@@ -29,12 +30,24 @@ const Base = (props) =>{
     const [found,setFound]=React.useState(false);
     const [messageDelay,setMessageDelay]=useState("");
     let selection=0;
+    const[num,setNum]=useState(0)
     
     const [message, setMessage] = useState('');
     const [xpos,setXpos]=useState(-1);
     const [ypos,setYpos]=useState(-1);
 
+    const [position,setPosition]=useState(-1)
 
+    const [listadoAllProductos,setListadoAllProductos]=useState([])
+
+    const httpObtenerProductos = async () => {
+        const resp = await fetch(`http://localhost:9999/producto`)
+        const data = await resp.json()
+        setListadoAllProductos(data)
+    }
+
+    console.log(listadoAllProductos)
+    console.log(position)
 
     const [isActive, setIsActive] = React.useState(false);
     const handleClick = () => {
@@ -46,19 +59,30 @@ const Base = (props) =>{
         }
       };
     
-      useEffect(() => {
+    useEffect(() => {
+        if(num<2){
+        setNum(num+1)
+        if(num==1){
+            httpObtenerProductos()
+        }}
         console.log("Search message inside useEffect: ", message);
         setXpos(-1);
-            setYpos(-1);
+           setYpos(-1);
             for(let i=0;i<allItems.length;i++){
                 for(let j=0;j<allItems[i].length;j++){
                     if(allItems[i][j].name==message){
                         setXpos(i);
                         setYpos(j);
-                    }
+                   }
                 }
             }
-      }, [message]);
+        setPosition(-1)
+        for(let i=0;i<listadoAllProductos.length;i++){
+            if(listadoAllProductos[i].Nombre==message){
+                setPosition(i)
+            }
+        }
+    }, [message]);
 
 
     const searchBar= ()=>{
@@ -152,6 +176,7 @@ const Base = (props) =>{
                     <Route path="/Reviews" element={<Reviews/>}/>
                     <Route path="/Ranking" element={<Ranking/>}/>
                     <Route path="/Search" element={<Search/>}/>
+                    <Route path="/story" element={<MyStory/>}/>
                 </Routes>
                 </BrowserRouter>
             </div>

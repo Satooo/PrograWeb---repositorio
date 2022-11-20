@@ -8,8 +8,9 @@ const About = ()=>{
     return <div><div className="content-about">
      <h1>CHECKOUT OUR LATEST BUILD AND MAKE IT YOUR OWN!</h1>
 
+
     <p id="content-about-subText">OUR MISSION IS TO BUILD GAMING PCS AT THE BEST PRICE WITOUT CUTTING CORNERS.</p>
-    <a href="/homepage"><button id="content-about-button">LET'S BUILD</button></a>
+    <a href="/story"><button id="content-about-button">LET'S BUILD</button></a>
    </div>
    <div id="content-about-black">
     <div className="LogoPC">
@@ -18,6 +19,5 @@ const About = ()=>{
     </div>
     </div>
    </div>
-
 }
 export default About;

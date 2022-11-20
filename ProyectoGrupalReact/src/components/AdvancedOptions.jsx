@@ -19,6 +19,7 @@ const AdvancedOptions = (props) => {
 
   const [listadoProductos,setListadoProductos]=useState([])
 
+
   const httpObtenerProductos = async (categoria) => {
     const resp = await fetch(`http://localhost:9999/producto?categoria=${categoria}`)
     const data = await resp.json()

@@ -4,11 +4,33 @@ import Base from "./Base";
 import {useState} from 'react';
 import { BrowserRouter,Route,Routes } from "react-router-dom";
 import BeginnerRecommendation from "./BeginnerRecommendation";
+import { useEffect } from "react";
 const BeginnerOptions = (props) =>{
     let currentSelection="";
     let selection=0;
     const [selected, setSelected] = React.useState(0);
     const [isActive, setIsActive] = useState(false);
+
+    const [listadoProductos,setListadoProductos]=useState([]);
+
+    const httpObtenerProductos = async () => {
+        const resp = await fetch(`http://localhost:9999/armados?tipo=${"coding"}`)
+        const data = await resp.json()
+        setListadoProductos(data)
+    }
+
+    useEffect(()=>{
+        httpObtenerProductos()
+    },[])
+
+    
+    const getProductos = ()=>{
+        return listadoProductos.map((_,index)=>{
+            return listadoProductos[index].Producto})
+    }
+    
+    console.log(getProductos())
+
     const handleClick = () => {
         // 👇️ toggle
         if(selection==0){
