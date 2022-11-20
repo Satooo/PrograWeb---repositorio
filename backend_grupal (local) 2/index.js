@@ -94,6 +94,24 @@ app.get("/armados",async(req,resp)=>{
 
 })
 
+app.get("/usuario",async(req,resp)=>{
+    const Nombre = req.query.nombre
+    const Apellido = req.query.apellido
+    if(Nombre==undefined || Apellido==undefined){
+        const listadoUsuario =await Usuario.findAll()
+        resp.send(listadoUsuario)
+    }else{
+        const listadoUsuario =await Usuario.findAll({
+            where:{
+                Nombre:Nombre,
+                Apellido:Apellido
+            }
+        })
+        resp.send(listadoUsuario)
+    }
+})
+
+
 app.listen(PUERTO, () => {
     console.log(`Servidor web iniciado en puerto ${PUERTO}`)
 })
