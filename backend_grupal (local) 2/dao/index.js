@@ -134,23 +134,23 @@ const Reporte = sequelize.define("Reporte",{
     },
     Correo:{
         type: DataTypes.STRING(),
-        allowNull: false
+        allowNull: true
     },
     Nombre:{
         type: DataTypes.STRING(),
-        allowNull: false
+        allowNull: true
     },
     Telefono:{
         type: DataTypes.STRING(),
-        allowNull: false
+        allowNull: true
     },
     Asunto:{
         type: DataTypes.STRING(),
-        allowNull: false
+        allowNull: true
     },
     Descripcion:{
         type: DataTypes.STRING(),
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps : false,
