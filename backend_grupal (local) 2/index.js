@@ -1,9 +1,9 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
-
+var crypto = require('crypto')
 const data = require("./test_data") // importamos data de test
-const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden } = require("./dao")
+const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto } = require("./dao")
 
 const PUERTO = 9999
 
@@ -111,8 +111,47 @@ app.get("/usuario",async(req,resp)=>{
     }
 })
 
+app.post("/orden",async(req,resp)=>{
+
+    await Producto.sync()
+    await Orden.sync()
+    await Orden_Producto.sync()
+
+
+    console.log("i got a request to post")
+
+    const OrdenId= crypto.randomUUID()
+
+    await Orden.create({
+        Orden_id: `${OrdenId}`,
+        Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+        Monto:"1",
+        Direccion:"12",
+        Fecha:new Date().toJSON()
+    })
+
+    await Orden_Producto.create({
+        Orden_Producto_id:`${crypto.randomUUID()}`,
+        Producto_id:"b8a32b12-f57d-4913-a908-a34626a01fb9",
+        Orden_id: `${OrdenId}`
+    })
+    
+
+      resp.end()
+
+      
+
+})
+
+app.get("/orden",async(req,resp)=>{
+    const listadoOrden=await Orden_Producto.findAll({
+        include:Producto
+    })
+
+    resp.send(listadoOrden)
+})
 
 app.listen(PUERTO, () => {
-    console.log(`Servidor web iniciado en puerto ${PUERTO}`)
+    console.log(`Servidor web iniciado en puerto ${PUERTO} `)
 })
 
