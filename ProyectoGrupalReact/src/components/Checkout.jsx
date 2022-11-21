@@ -4,10 +4,32 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   codingComponentes, officeComponents, renderingComponents, otherComponents,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const Checkout = ()=>{
     const [star,setStar]=useState(0);
     const [done,setDone]=useState(false);
+
+    const [listadoProductos,setListadoProductos]=useState([])
+
+    const httpEnviarProductos = async (list) => {
+      const doc ={
+        possibleCheckoutItems:{list}
+      }
+      await fetch(`http://localhost:9999/orden`,{
+        method: 'POST',
+        body: JSON.stringify(doc),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      })
+    }
+
+    useEffect(()=>{
+      if(done){
+        httpEnviarProductos(possibleCheckoutItems)
+      }
+      
+    },[done])
+
     let possibleCheckoutItems;
     if(localStorage.getItem("possibleCheckoutItems")!=null){
       possibleCheckoutItems=JSON.parse(localStorage.getItem("possibleCheckoutItems"));

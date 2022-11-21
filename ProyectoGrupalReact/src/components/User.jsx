@@ -4,6 +4,7 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   codingComponentes, officeComponents, renderingComponents, otherComponents,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const User = () =>{
     const [selected, setSelected] = React.useState(0);
@@ -20,6 +21,36 @@ const User = () =>{
     const [phone,setPhone]=useState("");
     const [logOut,setLogOut]=useState(false);
     const user=JSON.parse(localStorage.getItem("user"));
+
+    const [listadoProductos,setListadoProductos]=useState([])
+
+    const httpObtenerProductos = async () => {
+        const resp = await fetch(`http://localhost:9999/orden`)
+        const data = await resp.json()
+        setListadoProductos(data)
+    }
+
+    const httpBorrarProductos = async () =>{
+        const doc ={
+            delete:true
+        }
+
+        const resp = await fetch(`http://localhost:9999/orden?delete=true`,{
+            method: 'POST',
+            body: JSON.stringify(doc),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        })
+    }
+
+    useEffect(()=>{
+        httpObtenerProductos()
+    },[])
+
+    const getProductos = ()=>{
+        return listadoProductos.map((_,index)=>{
+            return listadoProductos[index].Producto})
+    }
+
  
     const profileInfo = () => {
         return <div className="row">
@@ -100,17 +131,26 @@ const User = () =>{
         </div>
     }
     const orderHistory=(actualizar)=>{
-        if(localStorage.getItem("orderHistory")!=null){
+        if(localStorage.getItem("orderHistory")!=null ){
         const history = JSON.parse(localStorage.getItem("orderHistory"));
-        const order=Array(history.length).fill(0).map((_,index)=>{
+        //const order=Array(history.length).fill(0).map((_,index)=>{
+        //    return<div id="historyCard">
+        //    <div className="inline">
+        //        <img src={history[index].img}/>
+        //        <p style={{width:"100%"}}>{history[index].name}</p>
+        //        <p><b>${history[index].price}</b></p>
+        //    </div>
+        //    </div>
+        //});
+        const order = Array(listadoProductos.length).fill(0).map((_,index)=>{
             return<div id="historyCard">
-            <div className="inline">
-                <img src={history[index].img}/>
-                <p style={{width:"100%"}}>{history[index].name}</p>
-                <p><b>${history[index].price}</b></p>
+               <div className="inline">
+               <img src={history[index].img}/>
+                <p style={{width:"100%"}}>{getProductos()[index].Nombre}</p>
+                <p><b>${getProductos()[index].Precio}</b></p>
             </div>
             </div>
-        });
+        })
         return <div>
             {order}
         </div>;
@@ -128,6 +168,7 @@ const User = () =>{
     }
     const deleteHistory = ()=>{
         localStorage.removeItem("orderHistory");
+        httpBorrarProductos()
         setActualizar(true);
     }
     return <div className="row" id="content-user">
