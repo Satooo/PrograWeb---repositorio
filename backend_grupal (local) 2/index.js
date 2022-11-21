@@ -102,11 +102,16 @@ app.post("/orden",async(req,resp)=>{
     await Orden.sync()
     await Orden_Producto.sync()
 
+    const Productos = req.body.possibleCheckoutItems.list
+
+    console.log(Productos[2].name)
+
+    
 
     console.log("i got a request to post")
 
     const OrdenId= crypto.randomUUID()
-
+     
     await Orden.create({
         Orden_id: `${OrdenId}`,
         Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
@@ -115,11 +120,21 @@ app.post("/orden",async(req,resp)=>{
         Fecha:new Date().toJSON()
     })
 
-    await Orden_Producto.create({
-        Orden_Producto_id:`${crypto.randomUUID()}`,
-        Producto_id:"b8a32b12-f57d-4913-a908-a34626a01fb9",
-        Orden_id: `${OrdenId}`
-    })
+    
+
+    for(let i=0;i<Productos.length;i++){
+        const temp = await Producto.findOne({
+            where:{
+                Nombre: Productos[i].name
+            }
+        })
+        await Orden_Producto.create({
+            Orden_Producto_id:`${crypto.randomUUID()}`,
+            Producto_id:temp.Producto_id,
+            Orden_id: `${OrdenId}`
+        })
+    }
+    
     
 
       resp.end()
@@ -166,7 +181,7 @@ app.post("/usuario",async(req,resp)=>{
         })
     }
     if(Opcion=="edit"){
-        
+
     }
 })
 
