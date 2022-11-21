@@ -4,6 +4,7 @@ const cors = require("cors")
 var crypto = require('crypto')
 const data = require("./test_data") // importamos data de test
 const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto } = require("./dao")
+const { truncate } = require("fs")
 
 const PUERTO = 9999
 
@@ -102,11 +103,20 @@ app.post("/orden",async(req,resp)=>{
     await Orden.sync()
     await Orden_Producto.sync()
 
-    const Productos = req.body.possibleCheckoutItems.list
-
-    console.log(Productos[2].name)
-
+    const Delete= req.query.delete
     
+    if(Delete=="true"){
+        await Orden.destroy({
+            where:{},
+            truncate:true
+        })
+        await Orden_Producto.destroy({
+            where:{},
+            truncate:true
+        })
+    }
+    if(Delete==undefined){
+    const Productos = req.body.possibleCheckoutItems.list
 
     console.log("i got a request to post")
 
@@ -133,6 +143,7 @@ app.post("/orden",async(req,resp)=>{
             Producto_id:temp.Producto_id,
             Orden_id: `${OrdenId}`
         })
+    }
     }
     
     
