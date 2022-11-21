@@ -94,22 +94,7 @@ app.get("/armados",async(req,resp)=>{
 
 })
 
-app.get("/usuario",async(req,resp)=>{
-    const Nombre = req.query.nombre
-    const Apellido = req.query.apellido
-    if(Nombre==undefined || Apellido==undefined){
-        const listadoUsuario =await Usuario.findAll()
-        resp.send(listadoUsuario)
-    }else{
-        const listadoUsuario =await Usuario.findAll({
-            where:{
-                Nombre:Nombre,
-                Apellido:Apellido
-            }
-        })
-        resp.send(listadoUsuario)
-    }
-})
+
 
 app.post("/orden",async(req,resp)=>{
 
@@ -164,6 +149,27 @@ app.get("/usuario",async(req,resp)=>{
         resp.send(listadoUsuario)
     }
 })
+
+app.post("/usuario",async(req,resp)=>{
+    const Opcion = req.query.Opcion
+    const Usuarioid=crypto.randomUUID()
+    if(Opcion=="create"){
+        await Usuario.create({
+            Usuario_id: `${Usuarioid}`,
+            Nombre: "",
+            Apellido:"",
+            Direccion:"",
+            Departamento:"",
+            Ciudad:"",
+            Codigo_postal:"",
+            Telefono:""
+        })
+    }
+    if(Opcion=="edit"){
+        
+    }
+})
+
 
 app.get("/reporte",async(req,resp)=>{
     const Correo = req.query.correo
