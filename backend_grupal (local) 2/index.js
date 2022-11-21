@@ -139,9 +139,8 @@ app.post("/orden",async(req,resp)=>{
 
       resp.end()
 
-      
-
 })
+
 
 app.get("/orden",async(req,resp)=>{
     const listadoOrden=await Orden_Producto.findAll({
@@ -149,6 +148,55 @@ app.get("/orden",async(req,resp)=>{
     })
 
     resp.send(listadoOrden)
+})
+
+app.get("/usuario",async(req,resp)=>{
+    const Nombre = req.query.nombre
+    const Apellido = req.query.apellido
+
+    if(Nombre!=undefined && Apellido!=undefined){
+        const listadoUsuario = await Usuario.findAll({
+            where:{
+                Nombre: Nombre,
+                Apellido: Apellido
+            }
+        })
+        resp.send(listadoUsuario)
+    }
+})
+
+app.get("/reporte",async(req,resp)=>{
+    const Correo = req.query.correo
+    if(Correo!=undefined){
+        const listadoReporte = await Reporte.findAll({
+            where:{
+                Correo:Correo
+            }
+        })
+        resp.send(listadoReporte)
+    }else{
+        const listadoReporte = await Reporte.findAll({
+
+        })
+        resp.send(listadoReporte)
+    }
+})
+
+app.get("/resena",async(req,resp)=>{
+    const Usuarioid=req.query.Usuario
+    if(Usuarioid!=undefined){
+        const listadoResena= await Resena.findAll({
+            where:{
+                Usuario_id:Usuarioid
+            }
+        })
+        resp.send(listadoResena)
+    }else{
+        const listadoResena= await Resena.findAll({
+
+        })
+        resp.send(listadoResena)
+    }
 })
 
 app.listen(PUERTO, () => {
