@@ -1,11 +1,11 @@
 const { Sequelize, DataTypes, DATE } = require("sequelize");
 
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
-
+// postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway
 //NUESTRO PROYECTO
 const CADENA_CONEXION = 
-    "postgresql://grupo5:postgres@localhost:5432/proyectopw"
-
+    //"postgresql://postgresql:grupo5@localhost:5432/proyectopw"
+    "postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway"
 const sequelize = new Sequelize(CADENA_CONEXION)
 
 
