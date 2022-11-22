@@ -230,7 +230,28 @@ app.get("/resena",async(req,resp)=>{
         resp.send(listadoResena)
     }
 })
-
+app.post("/reporte",async(req,resp)=>{
+    const reportedata=req.body.list.list
+    const reporteid=crypto.randomUUID()
+        console.log("Hola")
+        console.log(reportedata)
+        console.log(reportedata[0])
+        resp.send(reportedata)
+        if(reportedata.length>0){
+        await Reporte.create({
+            Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Reporte_id: `${reporteid}`,
+            Correo: `${reportedata[0]}`,
+            Nombre: `${reportedata[1]}`,
+            Telefono: `${reportedata[2]}`,
+            Descripcion: `${reportedata[3]}`,
+            Asunto:`${reportedata[4]}`
+        })
+        }
+        resp.end()
+    
+    
+})
 app.listen(PUERTO, () => {
     console.log(`Servidor web iniciado en puerto ${PUERTO} `)
 })
