@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes, DATE } = require("sequelize");
+const { Sequelize, DataTypes, DATE, UUID } = require("sequelize");
 
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
 // postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway
@@ -219,6 +219,46 @@ const Orden = sequelize.define("Orden",{
     freezeTableName : true
 })
 
+const Orden_Producto = sequelize.define("Orden_Producto",{
+    Orden_Producto_id:{
+        primaryKey:true,
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+   Orden_id:{
+    type:DataTypes.UUID(), // ()?
+    allowNull:false
+   },
+   Producto_id:{
+    type:DataTypes.UUID,
+    allowNull:false
+   }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
+Reporte.belongsTo(Usuario, {
+    foreignKey: "Usuario_id"
+})
+
+Usuario.hasMany(Reporte, {
+    foreignKey: "Usuario_id"
+})
+
+Resena.belongsTo(Usuario, {
+    foreignKey: "Usuario_id"
+})
+Usuario.hasMany(Resena, {
+    foreignKey: "Usuario_id"
+})
+
+Orden.belongsTo(Usuario, {
+    foreignKey: "Usuario_id"
+})
+Usuario.hasMany(Orden, {
+    foreignKey: "Usuario_id"
+})
 
 PC_Armado_Producto.belongsTo(Producto,{
     foreignKey:"Producto_id"
@@ -234,6 +274,20 @@ PCArmado.hasMany(PC_Armado_Producto,{
     foreignKey:"PC_Armado_id"
 })
 
+Orden_Producto.belongsTo(Orden,{
+    foreignKey:"Orden_id"
+})
+Orden.hasMany(Orden_Producto,{
+    foreignKey:"Orden_id"
+})
+
+Orden_Producto.belongsTo(Producto,{
+    foreignKey:"Producto_id"
+})
+Producto.hasMany(Orden_Producto,{
+    foreignKey:"Producto_id"
+})
+
 module.exports = {
-    Producto, PCArmado,PC_Armado_Producto,Usuario,Orden,Reporte,Resena
+    Producto, PCArmado,PC_Armado_Producto,Usuario,Orden,Reporte,Resena,Orden_Producto
 }

@@ -1,9 +1,10 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
-
+var crypto = require('crypto')
 const data = require("./test_data") // importamos data de test
-const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden } = require("./dao")
+const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto } = require("./dao")
+const { truncate } = require("fs")
 
 const PUERTO = 9999
 
@@ -94,25 +95,143 @@ app.get("/armados",async(req,resp)=>{
 
 })
 
+
+
+app.post("/orden",async(req,resp)=>{
+
+    await Producto.sync()
+    await Orden.sync()
+    await Orden_Producto.sync()
+
+    const Delete= req.query.delete
+    
+    if(Delete=="true"){
+        await Orden.destroy({
+            where:{},
+            truncate:true
+        })
+        await Orden_Producto.destroy({
+            where:{},
+            truncate:true
+        })
+    }
+    if(Delete==undefined){
+    const Productos = req.body.possibleCheckoutItems.list
+
+    console.log("i got a request to post")
+
+    const OrdenId= crypto.randomUUID()
+     
+    await Orden.create({
+        Orden_id: `${OrdenId}`,
+        Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+        Monto:"1",
+        Direccion:"12",
+        Fecha:new Date().toJSON()
+    })
+
+    
+
+    for(let i=0;i<Productos.length;i++){
+        const temp = await Producto.findOne({
+            where:{
+                Nombre: Productos[i].name
+            }
+        })
+        await Orden_Producto.create({
+            Orden_Producto_id:`${crypto.randomUUID()}`,
+            Producto_id:temp.Producto_id,
+            Orden_id: `${OrdenId}`
+        })
+    }
+    }
+    
+    
+
+      resp.end()
+
+})
+
+
+app.get("/orden",async(req,resp)=>{
+    const listadoOrden=await Orden_Producto.findAll({
+        include:Producto
+    })
+
+    resp.send(listadoOrden)
+})
+
 app.get("/usuario",async(req,resp)=>{
     const Nombre = req.query.nombre
     const Apellido = req.query.apellido
-    if(Nombre==undefined || Apellido==undefined){
-        const listadoUsuario =await Usuario.findAll()
-        resp.send(listadoUsuario)
-    }else{
-        const listadoUsuario =await Usuario.findAll({
+
+    if(Nombre!=undefined && Apellido!=undefined){
+        const listadoUsuario = await Usuario.findAll({
             where:{
-                Nombre:Nombre,
-                Apellido:Apellido
+                Nombre: Nombre,
+                Apellido: Apellido
             }
         })
         resp.send(listadoUsuario)
     }
 })
 
+app.post("/usuario",async(req,resp)=>{
+    const Opcion = req.query.Opcion
+    const Usuarioid=crypto.randomUUID()
+    if(Opcion=="create"){
+        await Usuario.create({
+            Usuario_id: `${Usuarioid}`,
+            Nombre: "",
+            Apellido:"",
+            Direccion:"",
+            Departamento:"",
+            Ciudad:"",
+            Codigo_postal:"",
+            Telefono:""
+        })
+    }
+    if(Opcion=="edit"){
+
+    }
+})
+
+
+app.get("/reporte",async(req,resp)=>{
+    const Correo = req.query.correo
+    if(Correo!=undefined){
+        const listadoReporte = await Reporte.findAll({
+            where:{
+                Correo:Correo
+            }
+        })
+        resp.send(listadoReporte)
+    }else{
+        const listadoReporte = await Reporte.findAll({
+
+        })
+        resp.send(listadoReporte)
+    }
+})
+
+app.get("/resena",async(req,resp)=>{
+    const Usuarioid=req.query.Usuario
+    if(Usuarioid!=undefined){
+        const listadoResena= await Resena.findAll({
+            where:{
+                Usuario_id:Usuarioid
+            }
+        })
+        resp.send(listadoResena)
+    }else{
+        const listadoResena= await Resena.findAll({
+
+        })
+        resp.send(listadoResena)
+    }
+})
 
 app.listen(PUERTO, () => {
-    console.log(`Servidor web iniciado en puerto ${PUERTO}`)
+    console.log(`Servidor web iniciado en puerto ${PUERTO} `)
 })
 
