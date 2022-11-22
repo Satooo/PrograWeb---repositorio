@@ -107,24 +107,72 @@ const faq =() =>{
         </div>
     </div>
 }
+const [Correo,setCorreo]=useState("")
+const [Nombre,setNombre]=useState("")
+const [Asunto,setAsunto]=useState("")
+const [Descripcion,setDescripcion]=useState("")
+const [Telefono,setTelefono]=useState("")
+const [Enviar,setEnviar]=useState(false)
+const [ListaReporte,setListaReporte]=useState([])
+let tempReporte=[]
+
+    const httpEnviarReporte = async (list) => {
+      const doc ={
+        list:{list}
+      }
+      await fetch(`http://localhost:9999/reporte`,{
+        method: 'POST',
+        body: JSON.stringify(doc),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      })
+    }
+
+    useEffect(()=>{
+      
+        
+        httpEnviarReporte(ListaReporte)
+
+        
+      
+      
+    },[ListaReporte])
+
 const submit =() =>{
     return<div id="content-support">
         <h1>Submit request</h1>
         <div id="content-support-submit" className="mt-5">
             <p>Email</p>
-            <input />
+            <input value={ Correo }
+                        onChange={ (evt) => {
+                            setCorreo(evt.target.value)}}/>
             <p>Name</p>
-            <input />
+            <input value={ Nombre }
+                        onChange={ (evt) => {
+                            setNombre(evt.target.value)}}/>
             <p>Phone</p>
-            <input />
+            <input value={ Telefono }
+                        onChange={ (evt) => {
+                            setTelefono(evt.target.value)}}/>
             <p>Subject</p>
-            <input/>
+            <input value={ Asunto }
+                        onChange={ (evt) => {
+                            setAsunto(evt.target.value)}}/>
             <p>Description</p>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            
+            <textarea value= { Descripcion}
+                        onChange={ (evt) => {
+                            setDescripcion(evt.target.value)}} class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <p></p>
-            <button>Submit</button>
+            <button onClick={()=>{
+                
+                
+                
+                setListaReporte([Correo, Nombre, Telefono, Descripcion, Asunto])
+            }}>Submit </button>
+
         </div>
     </div>
+
 }
 
 const content = (selection) =>{
