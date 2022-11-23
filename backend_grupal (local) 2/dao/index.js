@@ -4,8 +4,9 @@ const { Sequelize, DataTypes, DATE, UUID } = require("sequelize");
 // postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway
 //NUESTRO PROYECTO
 const CADENA_CONEXION = 
-    //"postgresql://postgresql:grupo5@localhost:5432/proyectopw"
-    "postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway"
+    "postgresql://grupo5:postgres@localhost:5432/proyectopw"
+    //HAZ CAMBIOS LOCALMENTE HASTA QUE FUNCIONEEEEEEEEE
+    //"postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway"
     
 const sequelize = new Sequelize(CADENA_CONEXION)
 

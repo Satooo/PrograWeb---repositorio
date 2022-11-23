@@ -165,12 +165,17 @@ app.get("/usuario",async(req,resp)=>{
     const Nombre = req.query.nombre
     const Apellido = req.query.apellido
 
-    if(Nombre!=undefined && Apellido!=undefined){
-        const listadoUsuario = await Usuario.findAll({
+    if(Nombre!=undefined || Apellido!=undefined){
+        const listadoUsuarioFilter = await Usuario.findAll({
             where:{
                 Nombre: Nombre,
                 Apellido: Apellido
             }
+        })
+        resp.send(listadoUsuarioFilter)
+    }else if(Nombre==undefined && Apellido==undefined){
+        console.log("entre")
+        const listadoUsuario = await Usuario.findAll({
         })
         resp.send(listadoUsuario)
     }
@@ -215,7 +220,7 @@ app.get("/reporte",async(req,resp)=>{
 })
 
 app.get("/resena",async(req,resp)=>{
-    const Usuarioid=req.query.Usuario
+    const Usuarioid=req.query.usuario
     if(Usuarioid!=undefined){
         const listadoResena= await Resena.findAll({
             where:{
@@ -225,7 +230,7 @@ app.get("/resena",async(req,resp)=>{
         resp.send(listadoResena)
     }else{
         const listadoResena= await Resena.findAll({
-
+            include:Usuario
         })
         resp.send(listadoResena)
     }
@@ -244,9 +249,25 @@ app.post("/reporte",async(req,resp)=>{
             Asunto:`${reportedata[4]}`
         })
         }
-        resp.end()
-    
-    
+        resp.end()        
+})
+
+app.post("/resena",async(req,resp)=>{
+    const resenadata = req.body.list.list
+    const resenaid=crypto.randomUUID()
+    if(resenadata.length>0){
+        await Resena.create({
+            Resena_id:`${resenaid}`,
+            Usuario_id:"d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Puntaje:`${resenadata[0]}`,
+            Comentario: `${resenadata[1]}`,
+            Video:`${resenadata[2]}`,
+            Link:`${resenadata[3]}`,
+            Tpo_resena:`${resenadata[4]}`
+        })
+
+    }
+    resp.end()
 })
 app.listen(PUERTO, () => {
     console.log(`Servidor web iniciado en puerto ${PUERTO} `)
