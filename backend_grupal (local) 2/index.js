@@ -233,10 +233,6 @@ app.get("/resena",async(req,resp)=>{
 app.post("/reporte",async(req,resp)=>{
     const reportedata=req.body.list.list
     const reporteid=crypto.randomUUID()
-        console.log("Hola")
-        console.log(reportedata)
-        console.log(reportedata[0])
-        resp.send(reportedata)
         if(reportedata.length>0){
         await Reporte.create({
             Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
