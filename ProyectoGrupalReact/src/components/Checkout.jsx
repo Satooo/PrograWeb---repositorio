@@ -9,6 +9,8 @@ import { useEffect } from "react";
 const Checkout = ()=>{
     const [star,setStar]=useState(0);
     const [done,setDone]=useState(false);
+    const [comentario,setComentario]=useState("")
+    const [fin,setFin]=useState(false)
 
     const [listadoProductos,setListadoProductos]=useState([])
 
@@ -22,13 +24,28 @@ const Checkout = ()=>{
         headers: {'Content-Type': 'application/json; charset=UTF-8'}
       })
     }
+    const [listaResena,setListaResena]=useState([])
+    const httpEnviarResena = async (list) => {
+      const doc ={
+        list:{list}
+      }
+      await fetch(`http://localhost:9999/resena`,{
+        method: 'POST',
+        body: JSON.stringify(doc),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      })
+    }
+
 
     useEffect(()=>{
       if(done){
         httpEnviarProductos(possibleCheckoutItems)
+        if(fin){
+          httpEnviarResena(listaResena)
+        }
       }
       
-    },[done])
+    },[done,fin])
 
     let possibleCheckoutItems;
     if(localStorage.getItem("possibleCheckoutItems")!=null){
@@ -65,8 +82,13 @@ const Checkout = ()=>{
         }
     }
     const deleteItems = ()=>{
+      setListaResena([star,comentario,"","","usuario"])
       localStorage.removeItem("possibleCheckoutItems");
+      setFin(true)
     }
+
+    
+
   const thankCard = () =>{
     if(possibleCheckoutItems.length>0){
     return <div id="thankCard" style={{display:done==true?"flex":"none"}}>
@@ -81,7 +103,7 @@ const Checkout = ()=>{
         <button onClick={()=>{setStar(5)}}><img src={star>=5?"/icons/star-filled.png":"/icons/star-unfilled.png"}  id="thankCardstar"/></button>
       </div>
       <p><b>Leave us a comment</b></p>
-      <textarea placeholder="optional"></textarea>
+      <textarea placeholder="optional" value={ comentario } onChange={ (evt) => {setComentario(evt.target.value)}} ></textarea>
       <a href="/homepage"><button id="thankCardbutton" onClick={()=>{deleteItems()}}>Submit</button></a>
     </div>
     }
