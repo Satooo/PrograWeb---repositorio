@@ -101,23 +101,23 @@ const Usuario = sequelize.define("Usuario",{
     },
     Direccion:{
         type:DataTypes.STRING(),
-        allowNull:false
+        allowNull:true
     },
     Departamento:{
         type:DataTypes.STRING(),
-        allowNull:false
+        allowNull:true
     },
     Ciudad:{
         type:DataTypes.STRING(),
-        allowNull:false
+        allowNull:true
     },
     Codigo_postal:{
         type:DataTypes.STRING(),
-        allowNull:false
+        allowNull:true
     },
     Telefono:{
         type:DataTypes.STRING(),
-        allowNull:false
+        allowNull:true
     }
 }, {
     timestamps : false,

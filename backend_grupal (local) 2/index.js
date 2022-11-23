@@ -17,6 +17,61 @@ app.use(cors()) // politica CORS (cualquier origen) <---- TODO: cuidado!!!
 app.use(express.static("assets")) // <-- configuracion de contenido estatico
 
 
+//Registro
+app.post("/registro", async (req, res) => {
+    const email = req.body.email
+    const usuarioExistente = await Usuario.findAll({
+        where : {
+            Correo: email
+        }
+    })
+    if (usuarioExistente.length == 0){
+        await Usuario.create({
+            Usuario_id: crypto.randomUUID(),
+            Nombre: req.body.name,
+            Apellido: req.body.lastName,
+            Correo: email,
+            Contrasena: req.body.password,
+            Direccion: req.body.address,
+            Departamento: req.body.apartment,
+            Ciudad: req.body.city,
+            Codigo_postal: req.body.zip,
+            Telefono: req.body.phone
+        });
+        res.send({
+            verify: true
+        })
+    } else{
+        res.send({
+            verify: false
+        })
+    }
+    
+})
+
+//Login
+app.post("/login", async (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+    const usuarioRegistrado = await Usuario.findAll({
+        where : {
+            Correo: email,
+            Contrasena: password
+        }
+    })
+    if (usuarioRegistrado.length == 0){
+        // No existe usuario
+        res.send({
+            verify: false
+        })
+    } else{
+        res.send({
+            verify: true
+        })
+    }
+    
+})
+
 //NUESTRO PROYECTO
 //Producto
 app.get("/producto",async(req,resp)=>{
