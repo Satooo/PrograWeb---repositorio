@@ -172,6 +172,7 @@ app.post("/orden",async(req,resp)=>{
     }
     if(Delete==undefined){
     const Productos = req.body.possibleCheckoutItems.list
+    const userid=req.body.userid
 
     console.log("i got a request to post")
 
@@ -179,7 +180,7 @@ app.post("/orden",async(req,resp)=>{
      
     await Orden.create({
         Orden_id: `${OrdenId}`,
-        Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+        Usuario_id: `${userid}`,
         Monto:"1",
         Direccion:"12",
         Fecha:new Date().toJSON()
@@ -209,11 +210,33 @@ app.post("/orden",async(req,resp)=>{
 
 
 app.get("/orden",async(req,resp)=>{
-    const listadoOrden=await Orden_Producto.findAll({
-        include:Producto
-    })
+    const userid=req.query.userid
 
-    resp.send(listadoOrden)
+    if(userid==undefined || userid==null){
+        
+        const listadoOrden=await Orden_Producto.findAll({
+            include:Producto
+        })
+        resp.send(listadoOrden)
+    }else{
+        const listadoOrdenOg=await Orden.findAll({
+            where:{
+                Usuario_id:userid
+            },
+            include:{
+                model:Orden_Producto,
+                include:Producto
+            }
+        })
+
+        //const listadoOrden=await listadoOrdenOg.findAll({
+        //    include:Producto
+        //})
+        resp.send(listadoOrdenOg)
+    }
+    
+
+    
 })
 
 app.get("/usuario",async(req,resp)=>{
@@ -304,10 +327,11 @@ app.get("/resena",async(req,resp)=>{
 })
 app.post("/reporte",async(req,resp)=>{
     const reportedata=req.body.list.list
+    const usuarioid=req.body.userid
     const reporteid=crypto.randomUUID()
         if(reportedata.length>0){
         await Reporte.create({
-            Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Usuario_id: `${usuarioid}`,
             Reporte_id: `${reporteid}`,
             Correo: `${reportedata[0]}`,
             Nombre: `${reportedata[1]}`,
@@ -321,11 +345,13 @@ app.post("/reporte",async(req,resp)=>{
 
 app.post("/resena",async(req,resp)=>{
     const resenadata = req.body.list.list
+    const userid=req.body.userid
+
     const resenaid=crypto.randomUUID()
     if(resenadata.length>0){
         await Resena.create({
             Resena_id:`${resenaid}`,
-            Usuario_id:"d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Usuario_id:`${userid}`,
             Puntaje:`${resenadata[0]}`,
             Comentario: `${resenadata[1]}`,
             Video:`${resenadata[2]}`,

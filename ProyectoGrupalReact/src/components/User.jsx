@@ -26,16 +26,29 @@ const User = () =>{
     const [listadoProductos,setListadoProductos]=useState([])
     const [Usuario,setUsuario]=useState([])
 
-    const httpObtenerProductos = async () => {
+    const [temp,setTemp]=useState([])
+
+    const httpObtenerProductos2 = async () => {
+        const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
+        const data = await resp.json()
+        console.log(data)
+    } 
+
+    const httpObtenerProductos = async (userid) => {
         const resp = await fetch(`http://localhost:9999/orden`)
         const data = await resp.json()
         setListadoProductos(data)
+        console.log("si hay usuario ")
+        const resp2= await fetch(`http://localhost:9999/orden?userid=${userid}`)
+        const data2= await resp2.json()
+        setTemp(data2)
     }
 
     const httpObtenerUsuario = async ()=>{
         const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
         const data = await resp.json()
         setUsuario(data[0])
+        
     }
 
     const httpBorrarProductos = async () =>{
@@ -50,13 +63,32 @@ const User = () =>{
         })
     }
 
+    const getOrdenProductos =(index)=>{
+        return temp[index].Orden_Productos[0].Producto
+    }
+
+
     useEffect(()=>{
-        httpObtenerProductos()
-        httpObtenerUsuario()
-    },[])
+        if(Usuario.Usuario_id==undefined){
+            httpObtenerUsuario()
+        }
+        
+        if(Usuario.Usuario_id!=undefined){
+            httpObtenerProductos(Usuario.Usuario_id)
+        }
+        //httpObtenerProductos2()
+        //httpObtenerProductos()
+        
+    },[Usuario])
 
     console.log(Usuario.Nombre)
     console.log(usuarioCorreo)
+
+    if(temp[0]!=undefined){
+        console.log(getOrdenProductos(0).Nombre)
+        console.log(getOrdenProductos(0).Precio)
+    }
+    
 
 
     const getProductos = ()=>{
@@ -143,9 +175,33 @@ const User = () =>{
             </div>
         </div>
     }
+    const imageLink = (selection)=>{
+        switch(selection){
+          case "Graficas":
+              return  "images/graphic.png";
+      
+          case "Procesador":
+              return "images/processor.png";
+      
+          case "Memoria":
+            return "images/memory.png";
+      
+          case "Almacenamiento":
+            return "images/storage.png";
+      
+          case "Cooler":
+            return "images/cooler.png";
+      
+          case "Windows":
+            return "images/windows.png";
+            
+          case "Power":
+            return "images/power.png";
+        }
+      }
     const orderHistory=(actualizar)=>{
-        if(localStorage.getItem("orderHistory")!=null ){
-        const history = JSON.parse(localStorage.getItem("orderHistory"));
+        //if(localStorage.getItem("orderHistory")!=null ){
+        //const history = JSON.parse(localStorage.getItem("orderHistory"));
         //const order=Array(history.length).fill(0).map((_,index)=>{
         //    return<div id="historyCard">
         //    <div className="inline">
@@ -155,12 +211,13 @@ const User = () =>{
         //    </div>
         //    </div>
         //});
+        if(temp.length>0){
         const order = Array(listadoProductos.length).fill(0).map((_,index)=>{
             return<div id="historyCard">
                <div className="inline">
-               <img src={history[index].img}/>
-                <p style={{width:"100%"}}>{getProductos()[index].Nombre}</p>
-                <p><b>${getProductos()[index].Precio}</b></p>
+               <img src={imageLink(getOrdenProductos(index).Categoria)}/>
+                <p style={{width:"100%"}}>{getOrdenProductos(index).Nombre}</p>
+                <p><b>${getOrdenProductos(index).Precio}</b></p>
             </div>
             </div>
         })
@@ -189,7 +246,7 @@ const User = () =>{
         <div className="row"><button id="content-user-buttons" className={selected==1?"content-user-button-selected":""} onClick={()=>{setSelected(1)}}>Order history</button></div>
         <div className="row"><button id="content-user-buttons" className={selected==0?"content-user-button-selected":""} onClick={()=>{setSelected(0)}}>Profile info</button></div>
         <a href={logOut==true?"/create-user":""}><div className="row"><button id="content-user-buttons" onClick={()=>{setLogOut(true)}}>Log out</button></div></a>
-        <button id="history-clear" style={{display:localStorage.getItem("orderHistory")!=null&&selected==1?"flex":"none"}} onClick={()=>{deleteHistory()}}>Clear history</button>
+        <button id="history-clear" style={{display:temp.length>0&&selected==1?"flex":"none"}} onClick={()=>{deleteHistory()}}>Clear history</button>
     </div>
     <div className="col-7" id="content-user-info">
         {showContent(selected)}
