@@ -21,13 +21,21 @@ const User = () =>{
     const [phone,setPhone]=useState("");
     const [logOut,setLogOut]=useState(false);
     const user=JSON.parse(localStorage.getItem("user"));
+    const usuarioCorreo = localStorage.getItem("Usuario_correo")
 
     const [listadoProductos,setListadoProductos]=useState([])
+    const [Usuario,setUsuario]=useState([])
 
     const httpObtenerProductos = async () => {
         const resp = await fetch(`http://localhost:9999/orden`)
         const data = await resp.json()
         setListadoProductos(data)
+    }
+
+    const httpObtenerUsuario = async ()=>{
+        const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+        const data = await resp.json()
+        setUsuario(data[0])
     }
 
     const httpBorrarProductos = async () =>{
@@ -44,7 +52,12 @@ const User = () =>{
 
     useEffect(()=>{
         httpObtenerProductos()
+        httpObtenerUsuario()
     },[])
+
+    console.log(Usuario.Nombre)
+    console.log(usuarioCorreo)
+
 
     const getProductos = ()=>{
         return listadoProductos.map((_,index)=>{
@@ -63,47 +76,47 @@ const User = () =>{
                 <div className="row">
                     <div className="col">
                         First Name
-                        <input className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.name):"name"} value={name}
+                        <input className="mt-3 mb-3" placeholder={Usuario.Nombre} value={name}
                 onChange={(e) => setName(e.target.value)}/>
                     </div>
                     <div className="col">
                         Last name
-                        <input className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.lastName):"lastName"} value={lastName}
+                        <input className="mt-3 mb-3" placeholder={Usuario.Apellido} value={lastName}
                 onChange={(e) => setLastName(e.target.value)}/>
                     </div>
                 </div>
                 <p >Email</p>
-                <input style={{width:"100%"}} className="mb-3" placeholder={localStorage.getItem("user")!=null?String(user.email):"email"} value={email}
+                <input style={{width:"100%"}} className="mb-3" placeholder={Usuario.Correo} value={email}
                 onChange={(e) => setEmail(e.target.value)}/>
                 <p >Address</p>
-                <input style={{width:"100%"}} className="mb-3" placeholder={localStorage.getItem("user")!=null?String(user.address):"address"} value={address}
+                <input style={{width:"100%"}} className="mb-3" placeholder={Usuario.Direccion} value={address}
                 onChange={(e) => setAddress(e.target.value)}/>
                 <div className="row">
                     <div className="col" >
                         Apartment, suit,etc
-                        <input  className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.apartment):"apartment"} value={apartment}
+                        <input  className="mt-3 mb-3" placeholder={"Apartamento 123"} value={apartment}
                 onChange={(e) => setApartment(e.target.value)}/>
                     </div>
                     <div className="col">
                         City
-                        <input className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.city):"city"} value={city}
+                        <input className="mt-3 mb-3" placeholder={Usuario.Ciudad} value={city}
                 onChange={(e) => setCity(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col">
                         Country, Region
-                        <input  className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.country):"country"} value={country}
+                        <input  className="mt-3 mb-3" placeholder={"Peru"} value={country}
                 onChange={(e) => setCountry(e.target.value)}/>
                     </div>
                     <div className="col">
                         Postal code, Zip code
-                        <input className="mt-3 mb-3" placeholder={localStorage.getItem("user")!=null?String(user.zip):"ZIP"} value={zip}
+                        <input className="mt-3 mb-3" placeholder={Usuario.Codigo_postal} value={zip}
                 onChange={(e) => setZip(e.target.value)}/>
                     </div>
                 </div>
                 <p>Phone</p>
-                <input style={{width:"100%"}} placeholder={localStorage.getItem("user")!=null?String(user.phone):"phone"} value={phone}
+                <input style={{width:"100%"}} placeholder={Usuario.Telefono} value={phone}
                 onChange={(e) => setPhone(e.target.value)}/>
                 <div className="row mt-5">
                     <div className="col"><button id="content-user-profile" onClick={()=>{

@@ -219,20 +219,32 @@ app.get("/orden",async(req,resp)=>{
 app.get("/usuario",async(req,resp)=>{
     const Nombre = req.query.nombre
     const Apellido = req.query.apellido
+    const Correo=req.query.correo
 
-    if(Nombre!=undefined || Apellido!=undefined){
-        const listadoUsuarioFilter = await Usuario.findAll({
-            where:{
-                Nombre: Nombre,
-                Apellido: Apellido
-            }
-        })
-        resp.send(listadoUsuarioFilter)
-    }else if(Nombre==undefined && Apellido==undefined){
+    if(Nombre==undefined && Apellido==undefined && Correo==undefined){
         console.log("entre")
         const listadoUsuario = await Usuario.findAll({
         })
         resp.send(listadoUsuario)
+    }else{
+        if(Nombre!=undefined || Apellido!=undefined){
+            const listadoUsuarioFilter = await Usuario.findAll({
+                where:{
+                    Nombre: Nombre,
+                    Apellido: Apellido
+                }
+            })
+            resp.send(listadoUsuarioFilter)
+        }
+        if(Correo!=undefined && Correo!=null){
+            const listadoUsuarioFilter = await Usuario.findAll({
+                where:{
+                    Correo: Correo
+                }
+            })
+            resp.send(listadoUsuarioFilter)
+        }
+
     }
 })
 

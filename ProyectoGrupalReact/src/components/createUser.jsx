@@ -6,6 +6,7 @@ import "./style.css";
 import { useState } from "react";
 import { useReducer } from "react";
 import { useNavigate } from "react-router-dom"
+import { useEffect } from "react";
 
 const CreateUser = () => {
     const navigate = useNavigate(); // Hook de navegacion
@@ -19,6 +20,7 @@ const CreateUser = () => {
 
     const [errorRegistro, setErrorRegistro] = useState(false)
     const [errorLogin, setErrorLogin] = useState(false)
+    const [logged,setLogged]=useState(false)
 
     const httpRegister = async (user) => {
         const resp = await fetch("http://localhost:9999/registro", {
@@ -50,12 +52,17 @@ const CreateUser = () => {
         const data = await resp.json();
         if (data.verify) {
             // Login correcto.
+            //
+            
+            setLogged(true)
             navigate("/homepage")
         } else {
             // No existe el usuario. Error.
             setErrorLogin(true)
         }
     }
+
+
 
     const register = () => {
         return <div id="login-menu">
@@ -134,7 +141,7 @@ const CreateUser = () => {
                         user.email = email;
                         user.password = password;
                         httpLogin(user);
-
+                        localStorage.setItem("Usuario_correo",user.email)
                         setName("");
                         setLastName("");
                         setEmail("");
