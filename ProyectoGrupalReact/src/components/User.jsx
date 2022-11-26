@@ -7,12 +7,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const User = () =>{
+    const [errorCorreo,setErrorCorreo]=useState(false);
     const [selected, setSelected] = React.useState(0);
     const [actualizar,setActualizar]=React.useState(false);
     const [name,setName]=useState("");
     const [lastName,setLastName]=useState("");
     const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
     const [address,setAddress]=useState("");
     const [apartment,setApartment]=useState("");
     const [city,setCity]=useState("");
@@ -32,7 +32,17 @@ const User = () =>{
         const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
         const data = await resp.json()
         console.log(data)
-    } 
+    }
+
+    const httpObtenerUsuariosCorreo = async(correo) => {
+        const resp = await fetch(`http://localhost:9999/vercorreo?correo=${correo}`);
+        const data = await resp.json();
+        if(data.length > 0){
+            setErrorCorreo(true) // Registrado
+        }else{
+            setErrorCorreo(false) // No Registrado
+        }
+    }
 
     const httpObtenerProductos = async (userid) => {
         const resp = await fetch(`http://localhost:9999/orden`)
@@ -81,8 +91,8 @@ const User = () =>{
         
     },[Usuario])
 
-    console.log(Usuario.Nombre)
-    console.log(usuarioCorreo)
+    //console.log(Usuario.Nombre)
+    //console.log(usuarioCorreo)
 
     if(temp[0]!=undefined){
         console.log(getOrdenProductos(0).Nombre)
@@ -126,7 +136,7 @@ const User = () =>{
                 <div className="row">
                     <div className="col" >
                         Apartment, suit,etc
-                        <input  className="mt-3 mb-3" placeholder={"Apartamento 123"} value={apartment}
+                        <input  className="mt-3 mb-3" placeholder={Usuario.Departamento} value={apartment}
                 onChange={(e) => setApartment(e.target.value)}/>
                     </div>
                     <div className="col">
@@ -152,24 +162,32 @@ const User = () =>{
                 onChange={(e) => setPhone(e.target.value)}/>
                 <div className="row mt-5">
                     <div className="col"><button id="content-user-profile" onClick={()=>{
-                        if (name!="" && lastName!="" && email!="" && password!=""){
+                        if (name!="" && lastName!="" && email!=""){
                             const tempUser={};
                             tempUser.name=name;
                             tempUser.lastName=lastName;
                             tempUser.email=email;
-                            tempUser.password=password;
-                            tempUser.address="address 123";
-                            tempUser.apartment="apartment 123"
-                            tempUser.city="Lima"
-                            tempUser.country="Perú";
-                            tempUser.zip="123";
-                            tempUser.phone="936779244";
+                            tempUser.address=address;
+                            tempUser.apartment=apartment;
+                            tempUser.city=city;
+                            tempUser.country=country;
+                            tempUser.zip=zip;
+                            tempUser.phone=phone;
                             localStorage.setItem("user",JSON.stringify(tempUser));
+                            httpObtenerUsuariosCorreo(email);
                         }else{
                             alert("At least fill the fullname, email and password");
                         }
                     }}
->Update info</button></div>
+                    >Update info</button>{(() => {
+                    if (errorCorreo) {
+                        return <div className="alert alert-danger">Error. El correo ya se encuentra registrado.</div>
+                    }else{
+                        return <div></div>
+                    }
+                })()
+                }
+                </div>
                     <div id="cancel-button" className="col"><button>Cancel</button></div>
                 </div>
             </div>

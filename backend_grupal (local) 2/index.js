@@ -17,6 +17,18 @@ app.use(cors()) // politica CORS (cualquier origen) <---- TODO: cuidado!!!
 app.use(express.static("assets")) // <-- configuracion de contenido estatico
 
 
+//Verificar si existen cuentas con el correo ingresado
+app.get("/vercorreo", async(req, resp)=>{
+    const correo = req.query.correo;
+    const listadoCuentas = await Usuario.findAll({
+        where : {
+            Correo: correo
+        }
+    })
+    resp.send(listadoCuentas)
+})
+
+
 //Registro
 app.post("/registro", async (req, res) => {
     const email = req.body.email
