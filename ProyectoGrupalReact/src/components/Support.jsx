@@ -115,11 +115,14 @@ const [Descripcion,setDescripcion]=useState("")
 const [Telefono,setTelefono]=useState("")
 const [Enviar,setEnviar]=useState(false)
 const [ListaReporte,setListaReporte]=useState([])
+const usuarioCorreo = localStorage.getItem("Usuario_correo")
+const [Usuario,setUsuario]=useState([])
 let tempReporte=[]
 
-    const httpEnviarReporte = async (list) => {
+    const httpEnviarReporte = async (list,userid) => {
       const doc ={
-        list:{list}
+        list:{list},
+        userid:userid
       }
       await fetch(`http://localhost:9999/reporte`,{
         method: 'POST',
@@ -128,10 +131,17 @@ let tempReporte=[]
       })
     }
 
+    const httpObtenerUsuario = async ()=>{
+        const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+        const data = await resp.json()
+        setUsuario(data[0])
+    }
+
     useEffect(()=>{
       
+        httpObtenerUsuario()
         
-        httpEnviarReporte(ListaReporte)
+        httpEnviarReporte(ListaReporte,Usuario.Usuario_id)
 
         
       
@@ -143,17 +153,17 @@ let tempReporte=[]
             <h1>Submit request</h1>
             <div id="content-support-submit" className="mt-5">
                 <p>Email</p>
-                <input value={ Correo }
+                <input placeholder={Usuario.Correo} value={ Correo }
                             onChange={ (evt) => {
-                                setCorreo(evt.target.value)}}/>
+                                setCorreo(evt.target.value)}} disabled="disabled"/>
                 <p>Name</p>
-                <input value={ Nombre }
+                <input placeholder={Usuario.Nombre} value={ Nombre }
                             onChange={ (evt) => {
-                                setNombre(evt.target.value)}}/>
+                                setNombre(evt.target.value)}} disabled="disabled"/>
                 <p>Phone</p>
-                <input value={ Telefono }
+                <input  placeholder={Usuario.Telefono} value={ Telefono }
                             onChange={ (evt) => {
-                                setTelefono(evt.target.value)}}/>
+                                setTelefono(evt.target.value)}} disabled="disabled"/>
                 <p>Subject</p>
                 <input value={ Asunto }
                             onChange={ (evt) => {
@@ -167,8 +177,8 @@ let tempReporte=[]
                 <button onClick={()=>{
                     
                     
-                    
-                    setListaReporte([Correo, Nombre, Telefono, Descripcion, Asunto])
+                    httpObtenerUsuario()
+                    setListaReporte([Usuario.Correo, Usuario.Nombre, Usuario.Telefono, Descripcion, Asunto])
                 }}>Submit </button>
     
             </div>

@@ -17,6 +17,18 @@ app.use(cors()) // politica CORS (cualquier origen) <---- TODO: cuidado!!!
 app.use(express.static("assets")) // <-- configuracion de contenido estatico
 
 
+//Verificar si existen cuentas con el correo ingresado
+app.get("/vercorreo", async(req, resp)=>{
+    const correo = req.query.correo;
+    const listadoCuentas = await Usuario.findAll({
+        where : {
+            Correo: correo
+        }
+    })
+    resp.send(listadoCuentas)
+})
+
+
 //Registro
 app.post("/registro", async (req, res) => {
     const email = req.body.email
@@ -172,6 +184,7 @@ app.post("/orden",async(req,resp)=>{
     }
     if(Delete==undefined){
     const Productos = req.body.possibleCheckoutItems.list
+    const userid=req.body.userid
 
     console.log("i got a request to post")
 
@@ -179,7 +192,7 @@ app.post("/orden",async(req,resp)=>{
      
     await Orden.create({
         Orden_id: `${OrdenId}`,
-        Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+        Usuario_id: `${userid}`,
         Monto:"1",
         Direccion:"12",
         Fecha:new Date().toJSON()
@@ -209,35 +222,71 @@ app.post("/orden",async(req,resp)=>{
 
 
 app.get("/orden",async(req,resp)=>{
-    const listadoOrden=await Orden_Producto.findAll({
-        include:Producto
-    })
+    const userid=req.query.userid
 
-    resp.send(listadoOrden)
+    if(userid==undefined || userid==null){
+        
+        const listadoOrden=await Orden_Producto.findAll({
+            include:Producto
+        })
+        resp.send(listadoOrden)
+    }else{
+        const listadoOrdenOg=await Orden.findAll({
+            where:{
+                Usuario_id:userid
+            },
+            include:{
+                model:Orden_Producto,
+                include:Producto
+            }
+        })
+
+        //const listadoOrden=await listadoOrdenOg.findAll({
+        //    include:Producto
+        //})
+        resp.send(listadoOrdenOg)
+    }
+    
+
+    
 })
 
 app.get("/usuario",async(req,resp)=>{
     const Nombre = req.query.nombre
     const Apellido = req.query.apellido
+    const Correo=req.query.correo
 
-    if(Nombre!=undefined || Apellido!=undefined){
-        const listadoUsuarioFilter = await Usuario.findAll({
-            where:{
-                Nombre: Nombre,
-                Apellido: Apellido
-            }
-        })
-        resp.send(listadoUsuarioFilter)
-    }else if(Nombre==undefined && Apellido==undefined){
+    if(Nombre==undefined && Apellido==undefined && Correo==undefined){
         console.log("entre")
         const listadoUsuario = await Usuario.findAll({
         })
         resp.send(listadoUsuario)
+    }else{
+        if(Nombre!=undefined || Apellido!=undefined){
+            const listadoUsuarioFilter = await Usuario.findAll({
+                where:{
+                    Nombre: Nombre,
+                    Apellido: Apellido
+                }
+            })
+            resp.send(listadoUsuarioFilter)
+        }
+        if(Correo!=undefined && Correo!=null){
+            const listadoUsuarioFilter = await Usuario.findAll({
+                where:{
+                    Correo: Correo
+                }
+            })
+            resp.send(listadoUsuarioFilter)
+        }
+
     }
 })
 
 app.post("/usuario",async(req,resp)=>{
     const Opcion = req.query.Opcion
+    const userid = req.query.userid
+    const userData=req.body.data.user
     const Usuarioid=crypto.randomUUID()
     if(Opcion=="create"){
         await Usuario.create({
@@ -251,8 +300,27 @@ app.post("/usuario",async(req,resp)=>{
             Telefono:""
         })
     }
-    if(Opcion=="edit"){
-
+    if(Opcion=="edit" && userid!=undefined){
+        const userSelected = await Usuario.findOne({
+            where: {
+                Usuario_id:userid
+            }
+        })
+        const correoUnico = await Usuario.findAll({
+            where:{
+                Correo: userSelected.Correo
+            }
+        })
+        if(correoUnico.length<=1){
+            userSelected.Correo=userData.Correo
+            userSelected.Nombre=userData.Nombre
+            userSelected.Apellido=userData.Apellido
+            userSelected.Direccion=userData.Direccion
+            userSelected.Codigo_postal=userData.Codigo_postal
+            userSelected.Telefono=userData.Telefono
+            await userSelected.save()
+        }
+        
     }
 })
 
@@ -292,10 +360,11 @@ app.get("/resena",async(req,resp)=>{
 })
 app.post("/reporte",async(req,resp)=>{
     const reportedata=req.body.list.list
+    const usuarioid=req.body.userid
     const reporteid=crypto.randomUUID()
         if(reportedata.length>0){
         await Reporte.create({
-            Usuario_id: "d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Usuario_id: `${usuarioid}`,
             Reporte_id: `${reporteid}`,
             Correo: `${reportedata[0]}`,
             Nombre: `${reportedata[1]}`,
@@ -309,11 +378,13 @@ app.post("/reporte",async(req,resp)=>{
 
 app.post("/resena",async(req,resp)=>{
     const resenadata = req.body.list.list
+    const userid=req.body.userid
+
     const resenaid=crypto.randomUUID()
     if(resenadata.length>0){
         await Resena.create({
             Resena_id:`${resenaid}`,
-            Usuario_id:"d32b2dc0-1407-4e1b-91e7-ec12e1b12526",
+            Usuario_id:`${userid}`,
             Puntaje:`${resenadata[0]}`,
             Comentario: `${resenadata[1]}`,
             Video:`${resenadata[2]}`,

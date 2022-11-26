@@ -12,11 +12,22 @@ const Checkout = ()=>{
     const [comentario,setComentario]=useState("")
     const [fin,setFin]=useState(false)
 
+    const usuarioCorreo = localStorage.getItem("Usuario_correo")
+    const [Usuario,setUsuario]=useState([])
+
+    const httpObtenerUsuario = async ()=>{
+      const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+      const data = await resp.json()
+      setUsuario(data[0])
+  }
+
+
     const [listadoProductos,setListadoProductos]=useState([])
 
-    const httpEnviarProductos = async (list) => {
+    const httpEnviarProductos = async (list,userid) => {
       const doc ={
-        possibleCheckoutItems:{list}
+        possibleCheckoutItems:{list},
+        userid:userid
       }
       await fetch(`http://localhost:9999/orden`,{
         method: 'POST',
@@ -25,9 +36,10 @@ const Checkout = ()=>{
       })
     }
     const [listaResena,setListaResena]=useState([])
-    const httpEnviarResena = async (list) => {
+    const httpEnviarResena = async (list,userid) => {
       const doc ={
-        list:{list}
+        list:{list},
+        userid
       }
       await fetch(`http://localhost:9999/resena`,{
         method: 'POST',
@@ -38,11 +50,13 @@ const Checkout = ()=>{
 
 
     useEffect(()=>{
-      if(done){
-        httpEnviarProductos(possibleCheckoutItems)
-        if(fin){
-          httpEnviarResena(listaResena)
-        }
+      httpObtenerUsuario()
+      if(done==true && fin==false){
+        httpObtenerUsuario()
+        httpEnviarProductos(possibleCheckoutItems,Usuario.Usuario_id)
+      }
+      if(done==true && fin==true){
+        httpEnviarResena(listaResena,Usuario.Usuario_id)
       }
       
     },[done,fin])
