@@ -285,6 +285,8 @@ app.get("/usuario",async(req,resp)=>{
 
 app.post("/usuario",async(req,resp)=>{
     const Opcion = req.query.Opcion
+    const userid = req.query.userid
+    const userData=req.body.data.user
     const Usuarioid=crypto.randomUUID()
     if(Opcion=="create"){
         await Usuario.create({
@@ -298,8 +300,27 @@ app.post("/usuario",async(req,resp)=>{
             Telefono:""
         })
     }
-    if(Opcion=="edit"){
-
+    if(Opcion=="edit" && userid!=undefined){
+        const userSelected = await Usuario.findOne({
+            where: {
+                Usuario_id:userid
+            }
+        })
+        const correoUnico = await Usuario.findAll({
+            where:{
+                Correo: userSelected.Correo
+            }
+        })
+        if(correoUnico.length<=1){
+            userSelected.Correo=userData.Correo
+            userSelected.Nombre=userData.Nombre
+            userSelected.Apellido=userData.Apellido
+            userSelected.Direccion=userData.Direccion
+            userSelected.Codigo_postal=userData.Codigo_postal
+            userSelected.Telefono=userData.Telefono
+            await userSelected.save()
+        }
+        
     }
 })
 

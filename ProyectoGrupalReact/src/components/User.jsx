@@ -7,12 +7,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const User = () =>{
-    const [errorCorreo,setErrorCorreo]=useState(false);
     const [selected, setSelected] = React.useState(0);
     const [actualizar,setActualizar]=React.useState(false);
     const [name,setName]=useState("");
     const [lastName,setLastName]=useState("");
     const [email,setEmail]=useState("");
+    const [password,setPassword]=useState("");
     const [address,setAddress]=useState("");
     const [apartment,setApartment]=useState("");
     const [city,setCity]=useState("");
@@ -32,17 +32,7 @@ const User = () =>{
         const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
         const data = await resp.json()
         console.log(data)
-    }
-
-    const httpObtenerUsuariosCorreo = async(correo) => {
-        const resp = await fetch(`http://localhost:9999/vercorreo?correo=${correo}`);
-        const data = await resp.json();
-        if(data.length > 0){
-            setErrorCorreo(true) // Registrado
-        }else{
-            setErrorCorreo(false) // No Registrado
-        }
-    }
+    } 
 
     const httpObtenerProductos = async (userid) => {
         const resp = await fetch(`http://localhost:9999/orden`)
@@ -59,6 +49,18 @@ const User = () =>{
         const data = await resp.json()
         setUsuario(data[0])
         
+    }
+
+    const httpActualizarUsuario = async (user,userid)=>{
+        const doc ={
+            data:{user},
+            userid:userid
+          }
+          await fetch(`http://localhost:9999/usuario?Opcion=edit&userid=${userid}`,{
+            method: 'POST',
+            body: JSON.stringify(doc),
+            headers: {'Content-Type': 'application/json; charset=UTF-8'}
+          }) 
     }
 
     const httpBorrarProductos = async () =>{
@@ -84,6 +86,15 @@ const User = () =>{
         }
         
         if(Usuario.Usuario_id!=undefined){
+            setName(Usuario.Nombre)
+            setLastName(Usuario.Apellido)
+            setEmail(Usuario.Correo)
+            setAddress(Usuario.Direccion)
+            setApartment("Apartment 123")
+            setCity(Usuario.Ciudad)
+            setCountry("Peru")
+            setPhone(Usuario.Telefono)
+            setZip(Usuario.Codigo_postal)
             httpObtenerProductos(Usuario.Usuario_id)
         }
         //httpObtenerProductos2()
@@ -91,8 +102,8 @@ const User = () =>{
         
     },[Usuario])
 
-    //console.log(Usuario.Nombre)
-    //console.log(usuarioCorreo)
+    console.log(Usuario.Nombre)
+    console.log(usuarioCorreo)
 
     if(temp[0]!=undefined){
         console.log(getOrdenProductos(0).Nombre)
@@ -118,42 +129,42 @@ const User = () =>{
                 <div className="row">
                     <div className="col">
                         First Name
-                        <input className="mt-3 mb-3" placeholder={Usuario.Nombre} value={name}
+                        <input className="mt-3 mb-3"  value={name}
                 onChange={(e) => setName(e.target.value)}/>
                     </div>
                     <div className="col">
                         Last name
-                        <input className="mt-3 mb-3" placeholder={Usuario.Apellido} value={lastName}
+                        <input className="mt-3 mb-3"  value={lastName}
                 onChange={(e) => setLastName(e.target.value)}/>
                     </div>
                 </div>
                 <p >Email</p>
-                <input style={{width:"100%"}} className="mb-3" placeholder={Usuario.Correo} value={email}
+                <input style={{width:"100%"}} className="mb-3" value={email}
                 onChange={(e) => setEmail(e.target.value)}/>
                 <p >Address</p>
-                <input style={{width:"100%"}} className="mb-3" placeholder={Usuario.Direccion} value={address}
+                <input style={{width:"100%"}} className="mb-3"  value={address}
                 onChange={(e) => setAddress(e.target.value)}/>
                 <div className="row">
                     <div className="col" >
                         Apartment, suit,etc
-                        <input  className="mt-3 mb-3" placeholder={Usuario.Departamento} value={apartment}
+                        <input  className="mt-3 mb-3"  value={apartment}
                 onChange={(e) => setApartment(e.target.value)}/>
                     </div>
                     <div className="col">
                         City
-                        <input className="mt-3 mb-3" placeholder={Usuario.Ciudad} value={city}
+                        <input className="mt-3 mb-3"  value={city}
                 onChange={(e) => setCity(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col">
                         Country, Region
-                        <input  className="mt-3 mb-3" placeholder={"Peru"} value={country}
+                        <input  className="mt-3 mb-3"  value={country}
                 onChange={(e) => setCountry(e.target.value)}/>
                     </div>
                     <div className="col">
                         Postal code, Zip code
-                        <input className="mt-3 mb-3" placeholder={Usuario.Codigo_postal} value={zip}
+                        <input className="mt-3 mb-3"  value={zip}
                 onChange={(e) => setZip(e.target.value)}/>
                     </div>
                 </div>
@@ -164,30 +175,23 @@ const User = () =>{
                     <div className="col"><button id="content-user-profile" onClick={()=>{
                         if (name!="" && lastName!="" && email!=""){
                             const tempUser={};
-                            tempUser.name=name;
-                            tempUser.lastName=lastName;
-                            tempUser.email=email;
-                            tempUser.address=address;
-                            tempUser.apartment=apartment;
-                            tempUser.city=city;
-                            tempUser.country=country;
-                            tempUser.zip=zip;
-                            tempUser.phone=phone;
+                            tempUser.Nombre=name;
+                            tempUser.Apellido=lastName;
+                            tempUser.Correo=email;
+                            tempUser.Direccion=address;
+                            tempUser.Apartamento="apartment 123"
+                            tempUser.Ciudad=city
+                            tempUser.Pais="Perú";
+                            tempUser.Codigo_postal=zip;
+                            tempUser.Telefono=phone;
                             localStorage.setItem("user",JSON.stringify(tempUser));
-                            httpObtenerUsuariosCorreo(email);
+                            localStorage.setItem("Usuario_correo",email)
+                            httpActualizarUsuario(tempUser,Usuario.Usuario_id)
                         }else{
                             alert("At least fill the fullname, email and password");
                         }
                     }}
-                    >Update info</button>{(() => {
-                    if (errorCorreo) {
-                        return <div className="alert alert-danger">Error. El correo ya se encuentra registrado.</div>
-                    }else{
-                        return <div></div>
-                    }
-                })()
-                }
-                </div>
+>Update info</button></div>
                     <div id="cancel-button" className="col"><button>Cancel</button></div>
                 </div>
             </div>
