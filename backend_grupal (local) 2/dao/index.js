@@ -5,7 +5,7 @@ const { Sequelize, DataTypes, DATE, UUID } = require("sequelize");
 //NUESTRO PROYECTO
 const CADENA_CONEXION = 
     "postgresql://grupo5:postgres@localhost:5432/proyectopw"
-    //HAZ CAMBIOS LOCALMENTE HASTA QUE FUNCIONEEEEEEEEE
+    //HAZ CAMBIOS LOCALMENTE HASTA QUE FUNCIONE
     //"postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway"
     
 const sequelize = new Sequelize(CADENA_CONEXION)
