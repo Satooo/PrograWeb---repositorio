@@ -28,6 +28,24 @@ app.get("/vercorreo", async(req, resp)=>{
     resp.send(listadoCuentas)
 })
 
+//Modificar
+app.post("/modify", async(req, resp) => {
+    await Usuario.update({
+        Nombre: req.body.Nombre,
+        Apellido: req.body.Apellido,
+        Correo: req.body.Correo,
+        Direccion: req.body.Direccion,
+        Departamento: req.body.Departamento,
+        Ciudad: req.body.Ciudad,
+        Codigo_postal: req.body.Codigo_postal,
+        Telefono: req.body.Telefono
+    },{
+        where: {
+            Usuario_id: req.body.Usuario_id
+        }
+    })
+})
+
 
 //Registro
 app.post("/registro", async (req, res) => {
@@ -311,7 +329,11 @@ app.post("/usuario",async(req,resp)=>{
                 Correo: userSelected.Correo
             }
         })
-        if(correoUnico.length<=1){
+        if(correoUnico.length==0){ // No existen correos.
+            resp.send({
+                verify : true
+            })
+            /*
             userSelected.Correo=userData.Correo
             userSelected.Nombre=userData.Nombre
             userSelected.Apellido=userData.Apellido
@@ -319,6 +341,11 @@ app.post("/usuario",async(req,resp)=>{
             userSelected.Codigo_postal=userData.Codigo_postal
             userSelected.Telefono=userData.Telefono
             await userSelected.save()
+            */
+        }else{
+            resp.send({         // Existen correos.
+                verify : false
+            })
         }
         
     }

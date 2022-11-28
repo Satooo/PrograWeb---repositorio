@@ -7,12 +7,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const User = () =>{
+    const [modTrigger, setModTrigger]=useState(false);
+    const [errorCorreo,setErrorCorreo]=useState(false);
     const [selected, setSelected] = React.useState(0);
     const [actualizar,setActualizar]=React.useState(false);
     const [name,setName]=useState("");
     const [lastName,setLastName]=useState("");
     const [email,setEmail]=useState("");
-    const [password,setPassword]=useState("");
     const [address,setAddress]=useState("");
     const [apartment,setApartment]=useState("");
     const [city,setCity]=useState("");
@@ -32,7 +33,54 @@ const User = () =>{
         const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
         const data = await resp.json()
         console.log(data)
-    } 
+    }
+
+    const httpObtenerUsuariosCorreo = async(correo) => {
+        const resp = await fetch(`http://localhost:9999/vercorreo?correo=${correo}`);
+        const data = await resp.json();
+        if(data.length > 0){
+            setErrorCorreo(true) // Registrado
+        }else{
+            setErrorCorreo(false) // No Registrado
+        }
+    }
+
+    useEffect(() => {
+        if(errorCorreo == false && modTrigger){
+            console.log("Entro!")
+            const tempUser={};
+            tempUser.Usuario_id=Usuario.Usuario_id;
+            tempUser.Nombre=name;
+            tempUser.Apellido=lastName;
+            tempUser.Correo=email;
+            tempUser.Direccion=address;
+            tempUser.Departamento=apartment;
+            tempUser.Ciudad=city;
+            tempUser.Pais=country;
+            tempUser.Codigo_postal=zip;
+            tempUser.Telefono=phone;
+            localStorage.setItem("user",JSON.stringify(tempUser));
+            localStorage.setItem("Usuario_correo", email);
+            httpModificar(tempUser)
+        }
+      }, [errorCorreo]);
+
+      useEffect(() => {
+        if(logOut){
+            localStorage.removeItem("user");
+            localStorage.removeItem("Usuario_correo");
+        }
+      }, [logOut]);
+
+    const httpModificar = async (user) => {
+        const resp = await fetch("http://localhost:9999/modify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+        });
+    }
 
     const httpObtenerProductos = async (userid) => {
         const resp = await fetch(`http://localhost:9999/orden`)
@@ -49,18 +97,6 @@ const User = () =>{
         const data = await resp.json()
         setUsuario(data[0])
         
-    }
-
-    const httpActualizarUsuario = async (user,userid)=>{
-        const doc ={
-            data:{user},
-            userid:userid
-          }
-          await fetch(`http://localhost:9999/usuario?Opcion=edit&userid=${userid}`,{
-            method: 'POST',
-            body: JSON.stringify(doc),
-            headers: {'Content-Type': 'application/json; charset=UTF-8'}
-          }) 
     }
 
     const httpBorrarProductos = async () =>{
@@ -90,7 +126,7 @@ const User = () =>{
             setLastName(Usuario.Apellido)
             setEmail(Usuario.Correo)
             setAddress(Usuario.Direccion)
-            setApartment("Apartment 123")
+            setApartment(Usuario.Departamento)
             setCity(Usuario.Ciudad)
             setCountry("Peru")
             setPhone(Usuario.Telefono)
@@ -102,8 +138,8 @@ const User = () =>{
         
     },[Usuario])
 
-    console.log(Usuario.Nombre)
-    console.log(usuarioCorreo)
+    //console.log(Usuario.Usuario_id)
+    //console.log(usuarioCorreo)
 
     if(temp[0]!=undefined){
         console.log(getOrdenProductos(0).Nombre)
@@ -175,23 +211,30 @@ const User = () =>{
                     <div className="col"><button id="content-user-profile" onClick={()=>{
                         if (name!="" && lastName!="" && email!=""){
                             const tempUser={};
+                            tempUser.Usuario_id=Usuario.Usuario_id;
                             tempUser.Nombre=name;
                             tempUser.Apellido=lastName;
                             tempUser.Correo=email;
                             tempUser.Direccion=address;
-                            tempUser.Apartamento="apartment 123"
-                            tempUser.Ciudad=city
-                            tempUser.Pais="Perú";
+                            tempUser.Departamento=apartment;
+                            tempUser.Ciudad=city;
+                            tempUser.Pais=country;
                             tempUser.Codigo_postal=zip;
                             tempUser.Telefono=phone;
-                            localStorage.setItem("user",JSON.stringify(tempUser));
-                            localStorage.setItem("Usuario_correo",email)
-                            httpActualizarUsuario(tempUser,Usuario.Usuario_id)
+                            httpObtenerUsuariosCorreo(email, tempUser);
+                            setModTrigger(true)
                         }else{
                             alert("At least fill the fullname, email and password");
                         }
                     }}
->Update info</button></div>
+                    >Update info</button>{(() => {
+                        if (errorCorreo) {
+                            return <div className="alert alert-danger">Error. El correo ya se encuentra registrado.</div>
+                        } else {
+                            return <div></div>
+                        }
+                    })()
+                        }</div>
                     <div id="cancel-button" className="col"><button>Cancel</button></div>
                 </div>
             </div>

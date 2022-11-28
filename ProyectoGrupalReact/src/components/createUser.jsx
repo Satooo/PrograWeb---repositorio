@@ -52,10 +52,11 @@ const CreateUser = () => {
         const data = await resp.json();
         if (data.verify) {
             // Login correcto.
-            //
-            
             setLogged(true)
-            navigate("/homepage")
+            alert(`Welcome ${user.email}.`);
+            window.location.href="http://localhost:3000/homepage"; // Redireccion con renderizado
+            localStorage.setItem("Usuario_correo",user.email)
+            
         } else {
             // No existe el usuario. Error.
             setErrorLogin(true)
@@ -141,7 +142,6 @@ const CreateUser = () => {
                         user.email = email;
                         user.password = password;
                         httpLogin(user);
-                        localStorage.setItem("Usuario_correo",user.email)
                         setName("");
                         setLastName("");
                         setEmail("");

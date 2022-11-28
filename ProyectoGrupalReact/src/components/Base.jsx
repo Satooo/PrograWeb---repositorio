@@ -50,6 +50,7 @@ const Base = (props) =>{
     console.log(position)
 
     const [isActive, setIsActive] = React.useState(false);
+    const Usuario_correo = localStorage.getItem("Usuario_correo");
     const handleClick = () => {
         if(selection==0){
             setIsActive(current => !current);
@@ -153,7 +154,7 @@ const Base = (props) =>{
             {searchBar()}
             <div id="navbar-profile">
                 <button onClick={()=>{handleClick()}}><img src={isActive==false ? './icons/search.png':'./icons/exit.png'}/></button>
-                <a href="/user"><button><img src={'./icons/user.png'}/></button></a>
+                <a href={Usuario_correo==null ? '/':'/user'}><button><img src={'./icons/user.png'}/></button></a>
                 <a href="/pre-checkout"><button><img src={'./icons/cart.png'}/></button></a>
             </div>
             </div>
