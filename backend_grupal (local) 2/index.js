@@ -426,6 +426,25 @@ app.post("/resena",async(req,resp)=>{
     }
     resp.end()
 })
+
+//Ranking-Perifericos
+
+app.get("/rankingp", async(req, resp)=>{
+    const rankingp_id = req.query.rankingp_id;
+    if(rankingp_id==undefined || rankingp_id==null){
+        const listadoRankingp = await Ranking_Periferico.findAll();
+        resp.send(listadoRankingp);
+    } else{
+        const listadoRankingp = await Ranking_Periferico.findAll({
+            where:{
+                Ranking_Periferico_id: rankingp_id
+            }
+        });
+        resp.send(listadoRankingp);
+    }
+})
+
+
 app.listen(PUERTO, () => {
     console.log(`Servidor web iniciado en puerto ${PUERTO} `)
 })

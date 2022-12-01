@@ -250,6 +250,29 @@ const Orden_Producto = sequelize.define("Orden_Producto",{
     freezeTableName : true
 })
 
+const Ranking_Periferico = sequelize.define("Ranking_Periferico",{
+    Ranking_Periferico_id:{
+        primaryKey:true,
+        type:DataTypes.UUID,
+        allowNull:false
+    },
+    Nombre:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    },
+    Precio:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+   },
+   url:{
+        type:DataTypes.STRING(),
+        allowNull:false
+    }
+}, {
+    timestamps : false,
+    freezeTableName : true
+})
+
 Reporte.belongsTo(Usuario, {
     foreignKey: "Usuario_id"
 })
