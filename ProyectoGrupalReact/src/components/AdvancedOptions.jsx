@@ -5,6 +5,7 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
 import { useEffect } from "react";
+import { RUTA_BACKEND } from "../conf";
 
 
 
@@ -21,7 +22,8 @@ const AdvancedOptions = (props) => {
 
 
   const httpObtenerProductos = async (categoria) => {
-    const resp = await fetch(`http://localhost:9999/producto?categoria=${categoria}`)
+    //const resp = await fetch(`http://localhost:9999/producto?categoria=${categoria}`)
+    const resp = await fetch(`${RUTA_BACKEND}producto?categoria=${categoria}`)
     const data = await resp.json()
     setListadoProductos(data)
   }

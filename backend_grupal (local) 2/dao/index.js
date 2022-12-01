@@ -3,12 +3,22 @@ const { Sequelize, DataTypes, DATE, UUID } = require("sequelize");
 // postgres://<USUARIO>:<PASSWORD>@<URL_HOST_BD>:<PUERTO_BD>/<NOMBRE_BD>
 // postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway
 //NUESTRO PROYECTO
-const CADENA_CONEXION = 
-    "postgresql://grupo5:postgres@localhost:5432/proyectopw"
+const CADENA_CONEXION = process.env.DATABASE_URL ||
+    "postgresql://postgres:OEQ2twKnrZTz2J9jJqCB@containers-us-west-94.railway.app:5978/railway"   
+    //"postgresql://grupo5:postgres@localhost:5432/proyectopw"
     //HAZ CAMBIOS LOCALMENTE HASTA QUE FUNCIONE
     //"postgres://postgres:2k0mYy4d48j1woGURljV@containers-us-west-138.railway.app:8018/railway"
     
-const sequelize = new Sequelize(CADENA_CONEXION)
+const sequelize = new Sequelize(CADENA_CONEXION,
+    {
+        dialectOptions:{
+            ssl:{
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
+    }
+    )
 
 
 //NUESTRO PROYECTO

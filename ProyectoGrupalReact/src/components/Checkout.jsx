@@ -5,6 +5,7 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
 import { useEffect } from "react";
+import { RUTA_BACKEND } from "../conf";
 
 const Checkout = ()=>{
     const [star,setStar]=useState(0);
@@ -16,7 +17,8 @@ const Checkout = ()=>{
     const [Usuario,setUsuario]=useState([])
 
     const httpObtenerUsuario = async ()=>{
-      const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+      //const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+      const resp = await fetch(`${RUTA_BACKEND}usuario?correo=${usuarioCorreo}`)
       const data = await resp.json()
       setUsuario(data[0])
   }
@@ -29,23 +31,27 @@ const Checkout = ()=>{
         possibleCheckoutItems:{list},
         userid:userid
       }
-      await fetch(`http://localhost:9999/orden`,{
+      //await fetch(`http://localhost:9999/orden`,{
+      await fetch(`${RUTA_BACKEND}orden`,{
         method: 'POST',
         body: JSON.stringify(doc),
         headers: {'Content-Type': 'application/json; charset=UTF-8'}
       })
     }
     const [listaResena,setListaResena]=useState([])
+
     const httpEnviarResena = async (list,userid) => {
       const doc ={
         list:{list},
         userid
       }
-      await fetch(`http://localhost:9999/resena`,{
+      //await fetch(`http://localhost:9999/resena`,{
+      await fetch(`${RUTA_BACKEND}resena`,{
         method: 'POST',
         body: JSON.stringify(doc),
         headers: {'Content-Type': 'application/json; charset=UTF-8'}
       })
+      window.location.href="http://localhost:3000/homepage";
     }
 
 
@@ -56,7 +62,9 @@ const Checkout = ()=>{
         httpEnviarProductos(possibleCheckoutItems,Usuario.Usuario_id)
       }
       if(done==true && fin==true){
+        console.log("se acabo")
         httpEnviarResena(listaResena,Usuario.Usuario_id)
+        
       }
       
     },[done,fin])
@@ -118,7 +126,7 @@ const Checkout = ()=>{
       </div>
       <p><b>Leave us a comment</b></p>
       <textarea placeholder="optional" value={ comentario } onChange={ (evt) => {setComentario(evt.target.value)}} ></textarea>
-      <a href="/homepage"><button id="thankCardbutton" onClick={()=>{deleteItems()}}>Submit</button></a>
+      <button id="thankCardbutton" onClick={()=>{deleteItems()}}>Submit</button>
     </div>
     }
   }

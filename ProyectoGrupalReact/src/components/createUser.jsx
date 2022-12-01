@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useReducer } from "react";
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react";
+import { RUTA_BACKEND } from "../conf";
 
 const CreateUser = () => {
     const navigate = useNavigate(); // Hook de navegacion
@@ -23,7 +24,8 @@ const CreateUser = () => {
     const [logged,setLogged]=useState(false)
 
     const httpRegister = async (user) => {
-        const resp = await fetch("http://localhost:9999/registro", {
+        //const resp = await fetch("http://localhost:9999/registro", {
+        const resp = await fetch(`${RUTA_BACKEND}registro`, {   
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +44,8 @@ const CreateUser = () => {
     }
 
     const httpLogin = async (user) => {
-        const resp = await fetch("http://localhost:9999/login", {
+        //const resp = await fetch("http://localhost:9999/login", {
+        const resp = await fetch(`${RUTA_BACKEND}login`, {   
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -6,7 +6,9 @@ const data = require("./test_data") // importamos data de test
 const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto } = require("./dao")
 const { truncate } = require("fs")
 
-const PUERTO = 9999
+//const PUERTO = 9999
+
+var PUERTO = process.env.PORT || 9999
 
 const app = express()
 app.use(bodyParser.json())
@@ -191,14 +193,15 @@ app.post("/orden",async(req,resp)=>{
     const Delete= req.query.delete
     
     if(Delete=="true"){
-        await Orden.destroy({
-            where:{},
-            truncate:true
-        })
         await Orden_Producto.destroy({
             where:{},
-            truncate:true
+            //truncate:true
         })
+        await Orden.destroy({
+            where:{},
+            //truncate:true
+        })
+        
     }
     if(Delete==undefined){
     const Productos = req.body.possibleCheckoutItems.list
@@ -406,9 +409,10 @@ app.post("/reporte",async(req,resp)=>{
 app.post("/resena",async(req,resp)=>{
     const resenadata = req.body.list.list
     const userid=req.body.userid
-
+    console.log(resenadata)
     const resenaid=crypto.randomUUID()
     if(resenadata.length>0){
+        console.log(resenadata)
         await Resena.create({
             Resena_id:`${resenaid}`,
             Usuario_id:`${userid}`,

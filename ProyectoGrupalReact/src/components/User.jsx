@@ -5,110 +5,151 @@ import { allItems, graphicItems,processorItems, powersupplyItems, coolerItems,
   possibleCheckoutItems} from "./models/dataScript";
 import { useState } from "react";
 import { useEffect } from "react";
+import { RUTA_BACKEND } from "../conf";
 
 const User = () =>{
     const [modTrigger, setModTrigger]=useState(false);
-    const [errorCorreo,setErrorCorreo]=useState(false);
-    const [selected, setSelected] = React.useState(0);
-    const [actualizar,setActualizar]=React.useState(false);
-    const [name,setName]=useState("");
-    const [lastName,setLastName]=useState("");
-    const [email,setEmail]=useState("");
-    const [address,setAddress]=useState("");
-    const [apartment,setApartment]=useState("");
-    const [city,setCity]=useState("");
-    const [country,setCountry]=useState("");
-    const [zip,setZip]=useState("");
-    const [phone,setPhone]=useState("");
-    const [logOut,setLogOut]=useState(false);
-    const user=JSON.parse(localStorage.getItem("user"));
-    const usuarioCorreo = localStorage.getItem("Usuario_correo")
+  const [errorCorreo,setErrorCorreo]=useState(false);
+  const [selected, setSelected] = React.useState(0);
+  const [actualizar,setActualizar]=React.useState(false);
+  const [name,setName]=useState("");
+  const [lastName,setLastName]=useState("");
+  const [email,setEmail]=useState("");
+  const [address,setAddress]=useState("");
+  const [apartment,setApartment]=useState("");
+  const [city,setCity]=useState("");
+  const [country,setCountry]=useState("");
+  const [zip,setZip]=useState("");
+  const [phone,setPhone]=useState("");
+  const [logOut,setLogOut]=useState(false);
+  const user=JSON.parse(localStorage.getItem("user"));
+  const usuarioCorreo = localStorage.getItem("Usuario_correo")
 
-    const [listadoProductos,setListadoProductos]=useState([])
-    const [Usuario,setUsuario]=useState([])
+  const [listadoProductos,setListadoProductos]=useState([])
+  const [Usuario,setUsuario]=useState([])
 
-    const [temp,setTemp]=useState([])
+  const [correoDisp,setCorreoDisp]=useState([])
 
-    const httpObtenerProductos2 = async () => {
-        const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
-        const data = await resp.json()
-        console.log(data)
-    }
+  const [temp,setTemp]=useState([])
 
-    const httpObtenerUsuariosCorreo = async(correo) => {
-        const resp = await fetch(`http://localhost:9999/vercorreo?correo=${correo}`);
-        const data = await resp.json();
-        if(data.length > 0){
-            setErrorCorreo(true) // Registrado
-        }else{
-            setErrorCorreo(false) // No Registrado
+  const httpObtenerProductos2 = async () => {
+      //const resp = await fetch(`http://localhost:9999/orden?userid=${Usuario.Usuario_id}`)
+      const resp = await fetch(`${RUTA_BACKEND}orden?userid=${Usuario.Usuario_id}`)
+      const data = await resp.json()
+      console.log(data)
+  }
+
+  const httpObtenerUsuariosCorreo = async(correo) => {
+    //const resp = await fetch(`http://localhost:9999/vercorreo?correo=${correo}`);
+    const resp = await fetch(`${RUTA_BACKEND}vercorreo?correo=${correo}`);
+    const data = await resp.json();
+    setCorreoDisp(data)
+    
+    if(data.length > 1){
+        setErrorCorreo(true) // Registrado
+    }else{
+        if(data.length == 1){
+            if(data[0].Nombre==Usuario.Nombre && data[0].Apellido==Usuario.Apellido){
+                //        console.log("usuario unico")
+                //    }
+                setErrorCorreo(false)
+                setModTrigger(true)
+                console.log("no hay error")
+            }else{
+                setErrorCorreo(true)
+            }
+         // No Registrado
+        }
+        if(data.length==0){
+            setErrorCorreo(false)
+            setModTrigger(true)
         }
     }
-
-    useEffect(() => {
-        if(errorCorreo == false && modTrigger){
-            console.log("Entro!")
-            const tempUser={};
-            tempUser.Usuario_id=Usuario.Usuario_id;
-            tempUser.Nombre=name;
-            tempUser.Apellido=lastName;
-            tempUser.Correo=email;
-            tempUser.Direccion=address;
-            tempUser.Departamento=apartment;
-            tempUser.Ciudad=city;
-            tempUser.Pais=country;
-            tempUser.Codigo_postal=zip;
-            tempUser.Telefono=phone;
-            localStorage.setItem("user",JSON.stringify(tempUser));
-            localStorage.setItem("Usuario_correo", email);
-            httpModificar(tempUser)
-        }
-      }, [errorCorreo]);
-
-      useEffect(() => {
-        if(logOut){
-            localStorage.removeItem("user");
-            localStorage.removeItem("Usuario_correo");
-        }
-      }, [logOut]);
-
-    const httpModificar = async (user) => {
-        const resp = await fetch("http://localhost:9999/modify", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        });
     }
+
+
+console.log(correoDisp)
+
+//if(correoDisp.length==1){
+//    if(correoDisp[0].Nombre==Usuario.Nombre && correoDisp[0].Apellido==Usuario.Apellido){
+//        console.log("usuario unico")
+//    }
+//}
+
+useEffect(() => {
+    if(errorCorreo == false && modTrigger){
+        console.log("trato de cambiar info personal")
+        const tempUser={};
+        tempUser.Usuario_id=Usuario.Usuario_id;
+        tempUser.Nombre=name;
+        tempUser.Apellido=lastName;
+        tempUser.Correo=email;
+        tempUser.Direccion=address;
+        tempUser.Departamento=apartment;
+        tempUser.Ciudad=city;
+        tempUser.Pais=country;
+        tempUser.Codigo_postal=zip;
+        tempUser.Telefono=phone;
+        localStorage.setItem("user",JSON.stringify(tempUser));
+        localStorage.setItem("Usuario_correo", email);
+        httpModificar(tempUser)
+        alert("Modifico datos personales!")
+    }
+  }, [modTrigger]);
+
+  useEffect(() => {
+    if(logOut){
+        localStorage.removeItem("user");
+        localStorage.removeItem("Usuario_correo");
+    }
+  }, [logOut]);
+
+const httpModificar = async (user) => {
+    //const resp = await fetch("http://localhost:9999/modify", {
+    const resp = await fetch(`${RUTA_BACKEND}modify`, {   
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+    
+    setModTrigger(false)
+}
 
     const httpObtenerProductos = async (userid) => {
-        const resp = await fetch(`http://localhost:9999/orden`)
+        //const resp = await fetch(`http://localhost:9999/orden`)
+        const resp = await fetch(`${RUTA_BACKEND}orden`)
         const data = await resp.json()
         setListadoProductos(data)
         console.log("si hay usuario ")
-        const resp2= await fetch(`http://localhost:9999/orden?userid=${userid}`)
+        //const resp2= await fetch(`http://localhost:9999/orden?userid=${userid}`)
+        const resp2= await fetch(`${RUTA_BACKEND}orden?userid=${userid}`)
         const data2= await resp2.json()
         setTemp(data2)
     }
 
     const httpObtenerUsuario = async ()=>{
-        const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+        //const resp = await fetch(`http://localhost:9999/usuario?correo=${usuarioCorreo}`)
+        const resp = await fetch(`${RUTA_BACKEND}usuario?correo=${usuarioCorreo}`)
         const data = await resp.json()
         setUsuario(data[0])
         
     }
+
 
     const httpBorrarProductos = async () =>{
         const doc ={
             delete:true
         }
 
-        const resp = await fetch(`http://localhost:9999/orden?delete=true`,{
+        //const resp = await fetch(`http://localhost:9999/orden?delete=true`,{
+        const resp = await fetch(`${RUTA_BACKEND}orden?delete=true`,{
             method: 'POST',
             body: JSON.stringify(doc),
             headers: {'Content-Type': 'application/json; charset=UTF-8'}
         })
+        window.location.href="http://localhost:3000/user";
     }
 
     const getOrdenProductos =(index)=>{
@@ -132,6 +173,11 @@ const User = () =>{
             setPhone(Usuario.Telefono)
             setZip(Usuario.Codigo_postal)
             httpObtenerProductos(Usuario.Usuario_id)
+
+            //httpObtenerUsuariosCorreo(Usuario.Correo)
+
+
+            
         }
         //httpObtenerProductos2()
         //httpObtenerProductos()
@@ -240,6 +286,9 @@ const User = () =>{
             </div>
         </div>
     }
+    console.log(temp.length)
+    console.log(listadoProductos.length)
+    console.log(temp[1])
     const imageLink = (selection)=>{
         switch(selection){
           case "Graficas":
@@ -277,14 +326,18 @@ const User = () =>{
         //    </div>
         //});
         if(temp.length>0){
-        const order = Array(listadoProductos.length).fill(0).map((_,index)=>{
-            return<div id="historyCard">
-               <div className="inline">
-               <img src={imageLink(getOrdenProductos(index).Categoria)}/>
-                <p style={{width:"100%"}}>{getOrdenProductos(index).Nombre}</p>
-                <p><b>${getOrdenProductos(index).Precio}</b></p>
-            </div>
-            </div>
+        const order = Array(temp.length).fill(0).map((_,index)=>{
+            return Array(temp[index].Orden_Productos.length).fill(0).map((_,index2)=>{
+                return <div id="historyCard">
+                <div className="inline">
+                <img src={imageLink(temp[index].Orden_Productos[index2].Producto.Categoria)}/>
+                <p style={{width:"100%"}}>{temp[index].Orden_Productos[index2].Producto.Nombre}</p>
+                <p><b>${temp[index].Orden_Productos[index2].Producto.Precio}</b></p>
+                </div>
+                </div>
+
+            })
+            
         })
         return <div>
             {order}
