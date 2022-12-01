@@ -324,5 +324,5 @@ Producto.hasMany(Orden_Producto,{
 })
 
 module.exports = {
-    Producto, PCArmado,PC_Armado_Producto,Usuario,Orden,Reporte,Resena,Orden_Producto
+    Producto, PCArmado,PC_Armado_Producto,Usuario,Orden,Reporte,Resena,Orden_Producto, Ranking_Periferico
 }

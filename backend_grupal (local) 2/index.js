@@ -3,7 +3,7 @@ const bodyParser = require("body-parser")
 const cors = require("cors")
 var crypto = require('crypto')
 const data = require("./test_data") // importamos data de test
-const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto } = require("./dao")
+const { Producto, PCArmado, PC_Armado_Producto,Usuario,Reporte,Resena,Orden, Orden_Producto, Ranking_Periferico } = require("./dao")
 const { truncate } = require("fs")
 
 //const PUERTO = 9999
